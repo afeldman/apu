@@ -6,7 +6,7 @@ import random
 import pytz
 
 class DateTime:
-
+    """Datetime contains the datetime utility functions"""
     @staticmethod
     def datetime2unix(datetime_: dt.datetime) -> int:
         """convert a datetime object into
@@ -26,7 +26,7 @@ class DateTime:
         return time.mktime(datetime_.timetuple())
 
     @staticmethod
-    def unixtime2date(unix:float) -> dt.datetime:
+    def unixtime2date(unix: float) -> dt.datetime:
         """convert a uniy timestamp to datetime object
 
         Arguments:
@@ -50,10 +50,10 @@ class DateTime:
 
     @staticmethod
     def add_time(datetime_: dt.datetime,
-             day: int = 0,
-             hour: int = 0,
-             minute: int = 0,
-             seconds: int = 0) -> dt.datetime:
+                 day: int = 0,
+                 hour: int = 0,
+                 minute: int = 0,
+                 seconds: int = 0) -> dt.datetime:
         """ add time to a datetime object with respect to the
             timezone
 
@@ -80,8 +80,8 @@ class DateTime:
         seconds += day * 24 * 60 ** 2
 
         # calculate timezone
-        tz = datetime_ + dt.timezone(seconds=seconds)
-        return tz.astimezone(pytz.utc).astimezone(tz.tzinfo)
+        time_zone = datetime_ + dt.timezone(seconds=seconds)
+        return time_zone.astimezone(pytz.utc).astimezone(time_zone.tzinfo)
 
     @staticmethod
     def generate(start: dt.datetime,
@@ -113,7 +113,7 @@ class DateTime:
 
                 2020-01-29 00:30:57.535096
         """
-        if not (start < end):
+        if start > end:
             raise ValueError(f"{start} should be before {end} !!!")
 
         time_intervall = end - start
