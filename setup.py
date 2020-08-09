@@ -6,8 +6,9 @@
 from setuptools import setup
 
 requires_datetime = ["pytz"]
+requires_setup = ["GitPython"]
 requires_all = (
-    + requires_datetime
+    + requires_time
     + requires_setup
 )
 
@@ -15,7 +16,7 @@ setup(
     package_data={"apu": []},
     extras_require={
         "all": requires_all,
-        "datetime": requires_datetime,
+        "datetime": requires_time,
         "setup": requires_setup,
     },
 )
