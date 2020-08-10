@@ -25,6 +25,11 @@ apu Multiprocessing
 .. automodule:: apu.mp
    :members:
 
+apu Design Patterns
+===================
+.. automodule:: apu.dp
+   :members:
+
 Indices and tables
 ==================
 
