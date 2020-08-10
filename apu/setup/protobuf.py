@@ -5,7 +5,6 @@ import os
 import sys
 import subprocess
 
-#from distutils.command.clean import clean as _clean
 from distutils.command.build_py import build_py_2to3 as _build_py
 from distutils.command.clean import clean as _clean
 

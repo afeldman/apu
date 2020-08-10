@@ -5,9 +5,9 @@ import multiprocessing.pool
 from typing import Any, Callable, List, Tuple
 
 def parallel_for(
-    loop_callback: Callable[[Any], Any],
-    parameters: List[Tuple[Any, ...]],
-    nb_threads: int = 8,
+        loop_callback: Callable[[Any], Any],
+        parameters: List[Tuple[Any, ...]],
+        nb_threads: int = 8,
 ) -> List[Any]:
     """Execute a for loop body in parallel
     .. note:: Race-Conditions
@@ -31,7 +31,3 @@ def parallel_for(
     """
     with closing(multiprocessing.pool.ThreadPool(nb_threads)) as pool:
         return pool.map(loop_callback, parameters)
-
-if __name__ == "__main__":
-    x = lambda x: x ** 2
-    print(parallel_for(x, [y for y in range(10)]))

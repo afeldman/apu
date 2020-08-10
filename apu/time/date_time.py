@@ -20,11 +20,9 @@ class DateTime:
 
         Examples:
         ..  example_code::
-            ..  code-block::
-                from apu.time.date_time import DateTime
-                DateTime.unixtime2date(datetime.now())
-
-                1234567890.123
+            >>> from apu.time.date_time import DateTime
+            >>> DateTime.unixtime2date(datetime.now())
+            1234567890.123
 
         """
 
@@ -42,11 +40,9 @@ class DateTime:
 
         Examples:
         ..  example_code::
-            ..  code-block::
-                from apu.time.date_time import DateTime
-                DateTime.unixtime2date(1234567890.123)
-
-                2009-02-13 23:31:30.123000
+            >>> from apu.time.date_time import DateTime
+            >>> DateTime.unixtime2date(1234567890.123)
+            2009-02-13 23:31:30.123000
         """
         assert isinstance(unix, float), "can not convert to \
                                          datetime make sure unix \
@@ -109,18 +105,17 @@ class DateTime:
 
         Examples:
         ..  example_code::
-            ..  code-block::
-                import random
-                import datetime as dt
-                from apu.time.date_time import DateTime
+            >>> import random
+            >>> import datetime as dt
+            >>> from apu.time.date_time import DateTime
 
-                rand = random.Random()
-                rand.seed(0)
+            >>> rand = random.Random()
+            >>> rand.seed(0)
 
-                print(DateTime.generate(start=dt.datetime(2020,1,2),
-                      end=dt.datetime(2020,2,3),
-                      random_callback=rand))
-                2020-01-29 00:30:57.535096
+            >>> print(DateTime.generate(start=dt.datetime(2020,1,2),
+            >>>       end=dt.datetime(2020,2,3),
+            >>>       random_callback=rand))
+            2020-01-29 00:30:57.535096
         """
         if start > end:
             raise ValueError(f"{start} should be before {end} !!!")
