@@ -20,6 +20,10 @@ apu Setup
 .. automodule:: apu.setup
    :members:
 
+apu Multiprocessing
+===================
+.. automodule:: apu.mp
+   :members:
 
 Indices and tables
 ==================

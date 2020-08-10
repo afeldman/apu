@@ -21,6 +21,17 @@ def parallel_for(
 
     Returns:
         (List[Any]): list of values
+
+    Examples:
+    .. example-code::
+        >>> x = lambda x: x ** 2
+        >>> parallel_for(x, [y for y in range(10)])
+        [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+
     """
     with closing(multiprocessing.pool.ThreadPool(nb_threads)) as pool:
         return pool.map(loop_callback, parameters)
+
+if __name__ == "__main__":
+    x = lambda x: x ** 2
+    print(parallel_for(x, [y for y in range(10)]))
