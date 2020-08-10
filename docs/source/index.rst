@@ -10,6 +10,15 @@ Welcome to apu's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+apu Time
+============
+.. automodule:: apu.time
+   :members:
+
+apu Setup
+============
+.. automodule:: apu.setup
+   :members:
 
 
 Indices and tables

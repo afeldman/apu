@@ -11,16 +11,21 @@ class DateTime:
     def datetime2unix(datetime_: dt.datetime) -> int:
         """convert a datetime object into
             a unixtimestamp
+
         Arguments:
             datetime_(dt.datetime): datetime
+
         Returns:
             (int): unix timestamp
 
         Examples:
-            .. code-block::
-                >>> DateTime.unixtime2date(datetime.now())
+        ..  example_code::
+            ..  code-block::
+                from apu.time.date_time import DateTime
+                DateTime.unixtime2date(datetime.now())
 
                 1234567890.123
+
         """
 
         return time.mktime(datetime_.timetuple())
@@ -36,8 +41,10 @@ class DateTime:
             (datetime.datetime): datetime
 
         Examples:
-            .. code-block::
-                >>> DateTime.unixtime2date(1234567890.123)
+        ..  example_code::
+            ..  code-block::
+                from apu.time.date_time import DateTime
+                DateTime.unixtime2date(1234567890.123)
 
                 2009-02-13 23:31:30.123000
         """
@@ -101,16 +108,18 @@ class DateTime:
             ValueError: the start end oder is wrong
 
         Examples:
-            .. code-block::
-                >>> import random
-                >>> rand = random.Random()
-                >>> rand.seed(0)
+        ..  example_code::
+            ..  code-block::
+                import random
+                import datetime as dt
+                from apu.time.date_time import DateTime
 
-                >>> import datetime as dt
-                >>> print(DateTime.generate(start=dt.datetime(2020,1,2),
-                                            end=dt.datetime(2020,2,3),
-                                            random_callback=rand))
+                rand = random.Random()
+                rand.seed(0)
 
+                print(DateTime.generate(start=dt.datetime(2020,1,2),
+                      end=dt.datetime(2020,2,3),
+                      random_callback=rand))
                 2020-01-29 00:30:57.535096
         """
         if start > end:

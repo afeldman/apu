@@ -12,7 +12,7 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../apu'))
+sys.path.insert(0, os.path.abspath('../..'))
 
 
 # -- Project information -----------------------------------------------------
@@ -21,6 +21,8 @@ project = 'apu'
 copyright = '2020, anton feldmann'
 author = 'anton feldmann'
 
+# The full version, including alpha/beta/rc tags
+release = '0.1.0'
 
 # -- General configuration ---------------------------------------------------
 
@@ -28,6 +30,9 @@ author = 'anton feldmann'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinx.ext.napoleon',
+    'sphinx.ext.autodoc',
+    'sphinx.ext.coverage'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
