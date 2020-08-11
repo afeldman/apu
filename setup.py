@@ -13,6 +13,7 @@ requires_all = (
 )
 
 setup(
+    version="0.1.0",
     package_data={"apu": []},
     extras_require={
         "all": requires_all,
