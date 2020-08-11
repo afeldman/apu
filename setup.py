@@ -16,10 +16,10 @@ setup(
     version="0.1.2",
     package_data={"apu": []},
     project_urls={
-    'Documentation': 'https://afeldman.github.io/apu/',
-    'Source': 'https://github.com/afeldman/apu',
-    'Tracker': 'https://github.com/afeldman/apu/issues',
-},
+        'Documentation': 'https://afeldman.github.io/apu/',
+        'Source': 'https://github.com/afeldman/apu',
+        'Tracker': 'https://github.com/afeldman/apu/issues',
+    },
     extras_require={
         "all": requires_all,
         "datetime": requires_datetime,
