@@ -30,6 +30,21 @@ apu Design Patterns
 .. automodule:: apu.dp
    :members:
 
+apu Exceptions
+===================
+.. automodule:: apu.exception
+   :members:
+
+apu Input/Output
+===================
+.. automodule:: apu.io
+   :members:
+
+apu Datastructures
+===================
+.. automodule:: apu.datastructures
+   :members:
+
 Indices and tables
 ==================
 
