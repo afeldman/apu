@@ -2,7 +2,7 @@
 
 import abc
 from typing import Any
-import pickle
+import dill as pickle
 
 from apu.dp.null import Null
 from apu.exception.readwrongfile import ReadWrongFile
