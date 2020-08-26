@@ -1,7 +1,7 @@
 """ dill pickle related functions """
 from typing import Any
 
-import dill as pickle
+import pickle
 
 from apu.exception.unsupporteddatatype import UnsupportedDataType
 

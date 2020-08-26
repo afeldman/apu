@@ -24,9 +24,9 @@ def m2pix(height: float,
             distorsion_scaling / extention / radius
 
 def km2pix(height: float,
-          extention: float,
-          radius: float = 6_378.137,
-          distorsion_scaling: float = 1.) -> float:
+           extention: float,
+           radius: float = 6_378.137,
+           distorsion_scaling: float = 1.) -> float:
     """ convert from kilometer in pixel
 
     Arguments:
@@ -53,7 +53,7 @@ def km2pix(height: float,
 def pix2carree(pixel: List[float],
                area: List[Tuple[float]],
                image_size: List[int],
-               origin: str="upper") -> tuple:
+               origin: str = "upper") -> tuple:
     """ Convert image pixel position to Carree lat/long
         ASSAMTION: central median is 0 => (long [-180,180[)
 
@@ -70,16 +70,17 @@ def pix2carree(pixel: List[float],
         tuple: (lat, lon) coordinates in a Plate Carree image
     """
 
-    lat = ( pixel[0] / image_size[0] ) * (area[1][0] - area[0][0]) + area[0][0]
-    lon = ( pixel[1] / image_size[1] ) * (area[1][1] - area[0][1])
+    lat = (pixel[0] / image_size[0]) * (area[1][0] - area[0][0]) + area[0][0]
+    lon = (pixel[1] / image_size[1]) * (area[1][1] - area[0][1])
     lon = lon + area[0][1] if origin == "lower" else area[0][1] - lon
 
     return (lat, lon)
 
+# pylint: disable=C0103
 def carree2pix(coord: List[float],
                area: List[Tuple[float]],
                image_size: List[int],
-               origin: str="upper") -> tuple:
+               origin: str = "upper") -> tuple:
     """ Convert Carree lat/long to image poxel position
 
     Arguments:
@@ -95,8 +96,9 @@ def carree2pix(coord: List[float],
         tuple: (u, v) pixel coordinate
     """
 
-    u =  image_size[0] * (coord[0] - area[0][0]) / (area[1][0] - area[0][0])
+    u = image_size[0] * (coord[0] - area[0][0]) / (area[1][0] - area[0][0])
     v = image_size[1] / (area[1][1] - area[0][1])
-    v = v * (coord[1] - area[0][1]) if origin == "lower" else v * (area[1][1] - coord[1])
+    v = v * (coord[1] - area[0][1]) if origin == "lower" else \
+        v * (area[1][1] - coord[1])
 
     return (u, v)
