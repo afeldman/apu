@@ -7,13 +7,15 @@ from setuptools import setup
 
 requires_datetime = ["pytz"]
 requires_setup = ["GitPython"]
+requires_geographie = ["numpy"]
 requires_all = (
     requires_datetime
     + requires_setup
+    + requires_geographie
 )
 
 setup(
-    version="0.1.2",
+    version="0.1.3",
     package_data={"apu": []},
     project_urls={
         'Documentation': 'https://afeldman.github.io/apu/',
@@ -24,5 +26,6 @@ setup(
         "all": requires_all,
         "datetime": requires_datetime,
         "setup": requires_setup,
+        "geo": requires_geographie,
     },
 )
