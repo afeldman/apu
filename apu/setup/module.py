@@ -2,9 +2,11 @@
 the module exists """
 from importlib.util import find_spec, module_from_spec
 
+
 class ModuleNotImportedError(ModuleNotFoundError):
     """ Extends ModuleNotFoundError. Because a Module can also
     available but not imported """
+
 
 class Module:
     """in this class all module containing functions are placed."""
@@ -25,10 +27,10 @@ class Module:
         """
         try:
             module_spec = find_spec(module_name)
-        except ModuleNotFoundError:
-            raise ModuleNotFoundError(f"{module_name} not found")
-        except AttributeError:
-            raise AttributeError(f"{module_name} attribute not valid")
+        except ModuleNotFoundError as mnfe:
+            raise ModuleNotFoundError(f"{module_name} not found") from mnfe
+        except AttributeError as ate:
+            raise AttributeError(f"{module_name} attribute not valid") from ate
 
         if module_spec is not None:
             return module_spec
@@ -60,7 +62,7 @@ class Module:
                 module_spec.loader.exec_module(module)
                 return module
             raise ModuleNotImportedError(f"{module_name} not imported!!")
-        except ModuleNotFoundError:
-            raise ModuleNotFoundError(f"{module_name} not found")
-        except AttributeError:
-            raise AttributeError(f"{module_name} attribute not valid")
+        except ModuleNotFoundError as mnf:
+            raise ModuleNotFoundError(f"{module_name} not found") from mnf
+        except AttributeError as ate:
+            raise AttributeError(f"{module_name} attribute not valid") from ate

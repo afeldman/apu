@@ -5,6 +5,7 @@ import dill as pickle
 
 from apu.exception.unsupporteddatatype import UnsupportedDataType
 
+
 def reconstruct(value: Any) -> str:
     """serialize the data
 
@@ -22,7 +23,8 @@ def reconstruct(value: Any) -> str:
         value = pickle.dumps(value, pickle.HIGHEST_PROTOCOL)
     except pickle.PicklingError as pickle_e:
         raise UnsupportedDataType(
-            f"Cannot serialize given data: {value}. Details: {pickle_e}")
+            f"Cannot serialize given data: {value}. Details: {pickle_e}"
+        ) from pickle_e
     return value
 
 
@@ -43,5 +45,5 @@ def load(data: str) -> Any:
         value = pickle.loads(data)
     except pickle.UnpicklingError as upe:
         raise UnsupportedDataType(
-            f"Cannot deserialize given data: {data}. Details: {upe}")
+            f"Cannot deserialize given data: {data}. Details: {upe}") from upe
     return value
