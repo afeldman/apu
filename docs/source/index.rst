@@ -15,6 +15,11 @@ apu Time
 .. automodule:: apu.time
    :members:
 
+apu Geographie
+============
+.. automodule:: apu.geo
+   :members:
+
 apu Setup
 ============
 .. automodule:: apu.setup
