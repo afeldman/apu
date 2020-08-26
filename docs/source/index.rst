@@ -15,8 +15,8 @@ apu Time
 .. automodule:: apu.time
    :members:
 
-apu Geographie
-============
+apu Geography
+==============
 .. automodule:: apu.geo
    :members:
 
@@ -26,12 +26,12 @@ apu Setup
    :members:
 
 apu Multiprocessing
-===================
+=====================
 .. automodule:: apu.mp
    :members:
 
 apu Design Patterns
-===================
+=====================
 .. automodule:: apu.dp
    :members:
 
