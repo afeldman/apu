@@ -41,7 +41,7 @@ class AlphabeticalOrderIterator(Iterator):
             value = self._collection[self._position]
             self._position += -1 if self._reverse_order else 1
         except IndexError:
-            raise StopIteration()
+            raise StopIteration() from IndexError
 
         return value
 
