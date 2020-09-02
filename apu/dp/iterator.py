@@ -14,14 +14,15 @@ class AlphabeticalOrderIterator(Iterator):
     _reverse_order: bool = False
 
     def __init__(self,
-                 collection: List[Any] = list(),
+                 collection: List[Any] = tuple(),
                  reverse_order: bool = False) -> None:
         """
         the constructor. set the list and the traversal order
 
         Attributes:
-            collection(List[Any]): the collection. default is list()
-            reverse_order(bool): traverse the collection starting with the last element
+            collection(List[Any]): the collection. default is tuple()
+            reverse_order(bool): traverse the collection starting
+                                 with the last element
         """
         self._collection = collection
         self._reverse_order = reverse_order
@@ -64,12 +65,12 @@ class AlphabeticalOrderCollection(Iterable):
         0
 
     """
-    def __init__(self, collection: List[Any] = list()) -> None:
+    def __init__(self, collection: List[Any] = tuple()) -> None:
         """
         iterator constructor
 
         Arguments:
-            collection(List[Any]): a list
+            collection(List[Any]): a tuple
         """
         self._collection = collection
 
