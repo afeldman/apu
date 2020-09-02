@@ -15,7 +15,7 @@ requires_all = (
 )
 
 setup(
-    version="0.1.4",
+    version="0.1.5",
     package_data={"apu": []},
     project_urls={
         'Documentation': 'https://afeldman.github.io/apu/',
