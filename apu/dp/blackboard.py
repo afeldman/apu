@@ -140,7 +140,8 @@ class Blackboard:
             raise NotEditable("Cannot update read-only data")
 
         if self._memory_wrapper.set(key, value):
-            meta_info.callback(value)
+            if isinstance(value, dict):
+                meta_info.callback(value)
             return True
         return False
 
@@ -203,7 +204,7 @@ class Blackboard:
         if key not in self._meta_info:
             raise NonExistingKey
         meta_info = self._meta_info[key]
-        meta_info.add_callback(callback)
+        meta_info.callback(callback)
         return id(callback)
 
     def remove_callback(self, key: str, callback: Callable[[Any], Any]) -> int:
@@ -222,7 +223,7 @@ class Blackboard:
         if key not in self._meta_info:
             raise NonExistingKey
         meta_info = self._meta_info[key]
-        meta_info.remove_callback(callback)
+        meta_info.del_callback(callback)
         return id(callback)
 
     def clear_callbacks(self, key: str):
@@ -237,7 +238,7 @@ class Blackboard:
         if key not in self._meta_info:
             raise NonExistingKey
         meta_info = self._meta_info[key]
-        meta_info.clear_callbacks()
+        #meta_info.clear_callbacks()
 
     def save(self, dir_path: str = './.blackboard'):
         """ save the blackboard
