@@ -66,7 +66,9 @@ class MetaInfo:
 
 class Blackboard:
     """a shared memory structure to handover information
-       in different objects"""
+       in different objects
+       TODO: Memory info
+       """
     def __init__(self):
         self._memory_wrapper = DictionaryWrapper()
         self._meta_info = {}
