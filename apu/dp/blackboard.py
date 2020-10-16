@@ -137,7 +137,10 @@ class Blackboard:
         """
         if key not in self._meta_info:
             raise NonExistingKey
+
+        # get meta info
         meta_info = self._meta_info[key]
+
         if meta_info.read_only:
             raise NotEditable("Cannot update read-only data")
 
@@ -164,9 +167,12 @@ class Blackboard:
             raise NonExistingKey
 
         if self._memory_wrapper.delete(key):
+            #get metainfo
             meta_info = self._meta_info[key]
-            meta_info.clear_callbacks()
+
+            meta_info.clean()
             del self._meta_info[key]
+
             return True
         return False
 
@@ -240,7 +246,7 @@ class Blackboard:
         if key not in self._meta_info:
             raise NonExistingKey
         meta_info = self._meta_info[key]
-        #meta_info.clear_callbacks()
+        meta_info.clean()
 
     def save(self, dir_path: str = './.blackboard'):
         """ save the blackboard
@@ -251,8 +257,8 @@ class Blackboard:
         if not os.path.exists(dir_path):
             os.mkdir(dir_path, 0o755)
         blackboard_file_path = os.path.join(dir_path, '.blackboard.pickle')
-        meta_info_file_path = os.path.join(dir_path, '.blackboard.meta')
         self._memory_wrapper.save(blackboard_file_path)
+        meta_info_file_path = os.path.join(dir_path, '.blackboard.meta')
         self._save_meta_info(meta_info_file_path)
 
     def load(self, dir_path: str = './.blackboard', safe: bool = True):
