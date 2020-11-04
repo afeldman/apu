@@ -45,10 +45,7 @@ def km2pix(height: float,
         f"apu.geo.Coord: distorsion_scaling {distorsion_scaling} has to" +\
          " be in the interval ]0,1]"
 
-    return m2pix(height=height,
-                 extention=extention,
-                 radius=radius*1000.0,
-                 distorsion_scaling=distorsion_scaling) / 1000.0
+    return (180. / np.pi) * height * distorsion_scaling / extention / radius
 
 def pix2carree(pixel: List[float],
                area: List[Tuple[float]],
