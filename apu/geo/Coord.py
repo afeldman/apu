@@ -3,10 +3,11 @@
 from typing import List, Tuple
 import numpy as np
 
-def m2pix(height: float,
-          extention: float,
-          radius: float,# = 6_378_137 ,
-          distorsion_scaling: float = 1.) -> float:
+def m2pix(
+        height: float,
+        extention: float,
+        radius: float,  # = 6_378_137 ,
+        distorsion_scaling: float = 1.) -> float:
     """ convert from meter in pixel
 
     Arguments:
@@ -22,6 +23,7 @@ def m2pix(height: float,
 
     return (180. / np.pi) * height * \
             distorsion_scaling / extention / radius
+
 
 def km2pix(height: float,
            extention: float,
@@ -47,6 +49,7 @@ def km2pix(height: float,
 
     return (180. / np.pi) * height * distorsion_scaling / extention / radius
 
+
 def pix2carree(pixel: List[float],
                area: List[Tuple[float]],
                image_size: List[int],
@@ -69,9 +72,10 @@ def pix2carree(pixel: List[float],
 
     lat = (pixel[0] / image_size[0]) * (area[1][0] - area[0][0]) + area[0][0]
     lon = (pixel[1] / image_size[1]) * (area[1][1] - area[0][1])
-    lon = lon + area[0][1] if origin == "lower" else area[0][1] - lon
+    lon = lon + area[0][1] if origin == "lower" else area[1][1] - lon
 
     return (lat, lon)
+
 
 # pylint: disable=C0103
 def carree2pix(coord: List[float],
@@ -94,8 +98,7 @@ def carree2pix(coord: List[float],
     """
 
     u = image_size[0] * (coord[0] - area[0][0]) / (area[1][0] - area[0][0])
-    v = image_size[1] / (area[1][1] - area[0][1])
-    v = v * (coord[1] - area[0][1]) if origin == "lower" else \
-        v * (area[1][1] - coord[1])
+    v = image_size[1] / (area[0][1] - area[1][1])
+    v *= (coord[1] - area[0][1]) if origin == "lower" else (area[1][1]-coord[1])
 
     return (u, v)
