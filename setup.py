@@ -5,6 +5,7 @@
 # Third party
 from setuptools import setup
 
+requires_designpattern = ["dill"]
 requires_datetime = ["pytz"]
 requires_setup = ["GitPython"]
 requires_geographie = ["numpy"]
@@ -12,6 +13,7 @@ requires_all = (
     requires_datetime
     + requires_setup
     + requires_geographie
+    + requires_designpattern
 )
 
 setup(
@@ -27,5 +29,6 @@ setup(
         "datetime": requires_datetime,
         "setup": requires_setup,
         "geo": requires_geographie,
+        "designpattern": requires_designpattern
     },
 )
