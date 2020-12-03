@@ -6,9 +6,6 @@ import glob
 
 '''
     supported_formats = {
-        ".yml"
-        ".json"
-        ".jsonl"
         ".pickle"
         ".dill"
         ".h5"

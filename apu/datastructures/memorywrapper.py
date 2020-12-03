@@ -32,11 +32,11 @@ class MemoryWrapper:
     def set(self, key: str, value: Any) -> bool:
         """ set a key to the memory value
         Arguments:
-            key(str): string typed key
-            value(Any): memory object
+            key: string typed key
+            value: Any memory object
 
         Return:
-            (bool): true if successfull stored
+            true if successfull stored: bool
         """
         return True
 

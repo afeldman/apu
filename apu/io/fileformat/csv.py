@@ -1,10 +1,11 @@
 import csv
 from typing import Union, List, Dict
 
-from apu.io.fileformat.format import FileFormat
+from apu.io.fileformat import FileFormat
 from apu.datastructures.enhanced_list import EnhancedList
 
 class CSV(FileFormat):
+
     def read(self):
         if "delimiter" not in self._args:
             self._args["delimiter"] = ","
