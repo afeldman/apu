@@ -1,12 +1,16 @@
+""" working with dill. acutally this is pickel ;)"""
 from dill import dump, load, HIGHEST_PROTOCOL
 from apu.io.fileformat import FileFormat
 
 class DILL(FileFormat):
+    """ working with a dill file"""
     def read(self):
+        """ read dill """
         with open(self._filepath.absolute(), mode="br") as pickle_file:
             self.data = load(pickle_file)
 
     def write(self, sink:str, create:bool=False):
+        """ "write dill """
         if "protocol" not in self._args:
             self._args["protocol"] = HIGHEST_PROTOCOL
         with open(sink, "wb") as handle:

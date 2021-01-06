@@ -1,3 +1,5 @@
+""" create hashcode for files """
+
 from hashlib import md5, sha224, sha256, sha384, sha1, sha512
 
 BUF_SIZE = 65636
@@ -13,6 +15,7 @@ DIGITS = {
 }
 
 def _calc_(file, hash_func):
+    """ calculate the file hash oh a file """
     hash_code = hash_func
 
     try:
@@ -26,6 +29,6 @@ def _calc_(file, hash_func):
                 hash_code.update(data)
 
         return hash_code
-    except Exception as err:
+    except Exception as err: # pylint: disable=W0703
         print(str(err))
         return None

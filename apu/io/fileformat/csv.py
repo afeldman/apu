@@ -1,3 +1,5 @@
+""" csv file read write """
+
 import csv
 from typing import Union, List, Dict
 
@@ -5,8 +7,9 @@ from apu.io.fileformat import FileFormat
 from apu.datastructures.enhanced_list import EnhancedList
 
 class CSV(FileFormat):
-
+    """ read write csv files """
     def read(self):
+        """ read a csv file """
         if "delimiter" not in self._args:
             self._args["delimiter"] = ","
         if "quotechar" not in self._args:
@@ -24,7 +27,8 @@ class CSV(FileFormat):
         skiprows = self._args["skiprows"]
         self._args.pop("skiprows", None)
 
-        with open(self._filepath.absolute(), encoding="utf8", mode="r") as csv_file:
+        with open(self._filepath.absolute(), encoding="utf8", mode="r") \
+            as csv_file:
             if format_ == "default":
                 reader = csv.reader(csv_file, **self._args)
                 data_tmp = EnhancedList(list(reader))
@@ -38,6 +42,7 @@ class CSV(FileFormat):
         return self.data
 
     def write(self, sink:str, create:bool=False):
+        """ write a csv file"""
         with open(sink, mode="w", encoding="utf8") as csv_file:
             if "delimiter" not in self._args:
                 self._args["delimiter"] = ","

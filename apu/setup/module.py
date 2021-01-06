@@ -2,11 +2,7 @@
 the module exists """
 from importlib.util import find_spec, module_from_spec
 
-
-class ModuleNotImportedError(ModuleNotFoundError):
-    """ Extends ModuleNotFoundError. Because a Module can also
-    available but not imported """
-
+from apu.exception.module import ModuleNotImportedError
 
 class Module:
     """in this class all module containing functions are placed."""

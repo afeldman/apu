@@ -1,14 +1,19 @@
+""" handling json files """
 from typing import Any
 
 from json import loads, dumps, load
 from apu.io.fileformat import FileFormat
 
+# pylint: disable=C0301
 class JSONL(FileFormat):
+    """ json line files """
     def read(self):
+        """ read json line files """
         with open(self._filepath.absolute(), encoding="utf8", mode="r") as jsonl_file:
             self.data = [loads(line, **self._args) for line in jsonl_file if len(line) > 0]
 
     def write(self, sink:str, create:bool=False):
+        """ read json line """
         with open(sink, mode="w", encoding="utf8") as jsonl_file:
             self._args["indent"] = None  # JSON has to be on one line!
             if "sort_keys" not in self._args:
@@ -24,11 +29,14 @@ class JSONL(FileFormat):
         return self.data
 
 class JSON(FileFormat):
+    """ json file """
     def read(self):
+        """ read json file """
         with open(self._filepath.absolute(), encoding="utf8", mode="r") as json_file:
             self.data: Any = load(json_file, **self._args)
 
     def write(self, sink:str, create:bool=False):
+        """ write json files """
         with open(sink, mode="w", encoding="utf8") as json_file:
             if "indent" not in self._args:
                 self._args["indent"] = 4

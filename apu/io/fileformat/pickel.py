@@ -1,12 +1,16 @@
+""" work with pickle """
 from pickle import dump, load, HIGHEST_PROTOCOL
 from apu.io.fileformat import FileFormat
 
 class Pickle(FileFormat):
+    """ handle pickel """
     def read(self):
+        """ read pickled file """
         with open(self._filepath.absolute(), mode="br") as pickle_file:
             self.data = load(pickle_file)
 
     def write(self, sink:str, create:bool=False):
+        """ write pickel file """
         if "protocol" not in self._args:
             self._args["protocol"] = HIGHEST_PROTOCOL
         with open(sink, "wb") as handle:

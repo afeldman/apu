@@ -1,17 +1,19 @@
 """ working with file formates """
 from typing import Dict, Any
-
-import tzlocal
 from datetime import datetime
-
 from abc import ABC, abstractmethod
 from pathlib import Path
 
+import tzlocal
+import magic
+
 from apu.io.hash import DIGITS
 
+# pylint: disable=W0311
 class FileFormat(ABC):
     """ base class. so each object implements the same functions """
-    def __init__(self, path: str, kwargs: Dict = None, data: Any = None) -> None:
+    def __init__(self, path: str,
+                kwargs: Dict = None, data: Any = None) -> None:
         """ Set the informations """
         self._filepath = Path(path)
         self._args = kwargs if kwargs is not None else {}
@@ -19,43 +21,48 @@ class FileFormat(ABC):
 
     @abstractmethod
     def read(self):
-        pass
+        """ read information from file into data buffer """
 
     @abstractmethod
     def write(self, sink:str, create: bool = True) -> None:
-        pass
+        """ write buffer into file"""
 
     def __exists(self, create: bool = False) -> bool:
+        """ does the file exists? if not exists, we can create the file """
         if self._filepath.exists():
             return True
+
+        if create:
+             self._filepath.touch("755", exist_ok=True)
         else:
-            if create:
-                self._filepath.touch("755", exist_ok=True)
-                return True
-            else:
-                raise FileNotFoundError(f"cannot find {self._filepath}")
-            return False
+            raise FileNotFoundError(f"cannot find {self._filepath}")
+
+        return False or create
 
     @property
     def creation_time(self):
-        tz = tzlocal.get_localzone()
+        """ date of creation """
+        timezone = tzlocal.get_localzone()
         #not tested on windows
         return datetime.fromtimestamp(
-            self._filepath.lstat().st_ctime).replace(tzinfo=tz)
+            self._filepath.lstat().st_ctime).replace(tzinfo=timezone)
 
     @property
     def modification_time(self):
-        tz = tzlocal.get_localzone()
+        """ date of modification """
+        timezone = tzlocal.get_localzone()
         return datetime.fromtimestamp(
-            self._filepath.lstat().st_mtime).replace(tzinfo=tz)
+            self._filepath.lstat().st_mtime).replace(tzinfo=timezone)
 
     @property
     def access_time(self):
-        tz = tzlocal.get_localzone()
+        """ date of last access """
+        timezone = tzlocal.get_localzone()
         return datetime.fromtimestamp(
-            self._filepath.lstat().st_atime).replace(tzinfo=tz)
+            self._filepath.lstat().st_atime).replace(tzinfo=timezone)
 
     def meta(self) -> Any:
+        """ aditional meta informations """
         meta: Dict[str, Any] = {
             "filepath": self._filepath.absolute(),
             "creation_data": self.creation_time,
@@ -64,8 +71,6 @@ class FileFormat(ABC):
         }
 
         try:
-            import magic
-
             f_mime = magic.Magic(mime=True, uncompress=True)
             f_other = magic.Magic(mime=False, uncompress=True)
             meta["mime"] = f_mime.from_file(meta["filepath"])
@@ -76,13 +81,17 @@ class FileFormat(ABC):
         return meta
 
     def fingerprint(self, method:str="sha1"):
+        """ build file fingerprint """
         method = method.lower()
         assert (method in DIGITS.keys()
-            ), f"cannot find the hashmethod. please select on of {DIGITS.keys()}"
+            ), f"cannot find the hashmethod. \
+                please select on of {DIGITS.keys()}"
         assert (self.__exists(create=False)), f"{self._filepath} is not a file!"
 
         # retrun hashed file
         return DIGITS[method](self._filepath)
 
     def compair(self, filepath:str, method="sha1"):
-        return str(self.fingerprint(method=method).hexdigest()) == str(FileFormat(filepath).fingerprint(method=method))
+        """ compair two files utilizing the fingerprint """
+        return str(self.fingerprint(method=method).hexdigest()) == \
+                    str(FileFormat(filepath).fingerprint(method=method))
