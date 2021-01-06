@@ -39,7 +39,7 @@ class EnhancedList(list, Generic[T]):
             list without rejected elements: EnhancedList
         """
         tmp_list = []
-        for i, elem in enumerate(indices):
+        for i, elem in enumerate(self):
             if i not in indices:
                 tmp_list.append(elem)
 
