@@ -4,10 +4,12 @@ encode byte type
 Author: Anton Feldmann <anton.feldmann@gmail.com>
 """
 
-# because numpy byte date is special
-import numpy as np
 # for floating point numbers
 import struct
+
+# because numpy byte date is special
+import numpy as np
+
 
 class Bytes(bytes):
     """ extends the byte datatype """
@@ -35,7 +37,7 @@ class Bytes(bytes):
         return str(byt)
 
     @staticmethod
-    def f2b(fnumber:float)->bytes:
+    def f2b(fnumber: float) -> bytes:
         """
             convert a floating point number to byte
 
@@ -57,7 +59,7 @@ class Bytes(bytes):
         return struct.pack('f', fnumber)
 
     @staticmethod
-    def b2f(bnumber:bytes) -> float:
+    def b2f(bnumber: bytes) -> float:
         """
             convert a byte string to a floating point number
 
@@ -79,6 +81,7 @@ class Bytes(bytes):
 
         [number] = struct.unpack('f', bnumber)
         return number
+
 
 class NumpyBytes(Bytes):
     """
@@ -107,7 +110,7 @@ class NumpyBytes(Bytes):
             <memory at 0x7f202e34fc80>
         """
         if not isinstance(matrix, np.ndarray):
-            raise TypeError(f"argument not numpy array type")
+            raise TypeError("argument not numpy array type")
         return matrix.data if matrix.flags['C_CONTIGUOUS'] else matrix.tobytes(
         )
 
@@ -133,7 +136,7 @@ class NumpyBytes(Bytes):
             >>> NumpyBytes.number2bytes(num)
             <memory at 0x7fcae8055ec0>
         """
-        if  not isinstance(num, (np.bool_, np.number)):
+        if not isinstance(num, (np.bool_, np.number)):
             raise TypeError("argument not numpy number type")
         return num.data
 
@@ -155,8 +158,10 @@ class NumpyBytes(Bytes):
 
             >>> array = np.zeros(1)
             >>> NumpyBytes.encode(array)
-            {b'nd': True, b'type': '<f8', b'kind': b'', b'shape': (1,), b'data': <memory at 0x7fcae79b87a0>}
+            {b'nd': True, b'type': '<f8', b'kind': b'',
+            b'shape': (1,), b'data': <memory at 0x7fcae79b87a0>}
         """
+        coded = None
         if isinstance(npobj, np.ndarray):
             if npobj.dtype.kind == 'V':
                 kind = b'V'
@@ -164,7 +169,7 @@ class NumpyBytes(Bytes):
             else:
                 kind = b''
                 descr = npobj.dtype.str
-            return {
+            coded = {
                 b'nd': True,
                 b'type': descr,
                 b'kind': kind,
@@ -173,16 +178,18 @@ class NumpyBytes(Bytes):
             }
 
         elif isinstance(npobj, (np.bool_, np.number)):
-            return {
+            coded = {
                 b'nd': False,
                 b'type': npobj.dtype.str,
                 b'data': NumpyBytes.number2bytes(npobj)
             }
 
         elif isinstance(npobj, complex):
-            return {b'complex': True, b'data': npobj.__repr__()}
+            coded = {b'complex': True, b'data': npobj.__repr__()}
         else:
-            return npobj if chain is None else chain(npobj)
+            coded = npobj if chain is None else chain(npobj)
+
+        return coded
 
     @staticmethod
     def decode(npobj, chain=None):
@@ -200,34 +207,40 @@ class NumpyBytes(Bytes):
             >>> import numpy as np
             >>> from apu.encoding.bytes import NumpyBytes
 
-            >>> NumpyBytes.decode({b'nd': True, b'type': '<f8', b'kind': b'', b'shape': (1,), b'data': <memory at 0x7fcae79b87a0>})
+            >>> NumpyBytes.decode(
+                {b'nd': True, b'type': '<f8', b'kind': b'',
+                b'shape': (1,), b'data': <memory at 0x7fcae79b87a0>})
             array([0.])
 
         """
+        decoded = None
+
         try:
             if b'nd' in npobj:
                 if npobj[b'nd'] is True:
                     if b'kind' in npobj and npobj[b'kind'] == b'V':
                         descr = [tuple(NumpyBytes.b2s(t) \
-                            if type(t) is bytes else t for t in d) \
+                            if isinstance(t, bytes) else t for t in d) \
                             for d in npobj[b'type']]
                     else:
                         descr = npobj[b'type']
-                    return np.frombuffer(
+                    decoded = np.frombuffer(
                         npobj[b'data'],
                         dtype=NumpyBytes._unpack_dtype(descr)).reshape(
                             npobj[b'shape'])
                 else:
                     descr = npobj[b'type']
-                    return np.frombuffer(
+                    decoded = np.frombuffer(
                         npobj[b'data'],
                         dtype=NumpyBytes._unpack_dtype(descr))[0]
             elif b'complex' in npobj:
-                return complex(NumpyBytes.b2s(npobj[b'data']))
+                decoded = complex(NumpyBytes.b2s(npobj[b'data']))
             else:
-                return npobj if chain is None else chain(npobj)
+                decoded = npobj if chain is None else chain(npobj)
         except KeyError:
-            return npobj if chain is None else chain(npobj)
+            decoded = npobj if chain is None else chain(npobj)
+
+        return decoded
 
     @staticmethod
     def _unpack_dtype(dtype):
