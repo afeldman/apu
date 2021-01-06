@@ -11,11 +11,11 @@ from apu.io.hash import DIGITS
 
 class FileFormat(ABC):
     """ base class. so each object implements the same functions """
-    def __init__(self, path: str, kwargs: Dict = dict()) -> None:
+    def __init__(self, path: str, kwargs: Dict = None, data: Any = None) -> None:
         """ Set the informations """
         self._filepath = Path(path)
-        self._args = kwargs
-        self.data = None
+        self._args = kwargs if kwargs is not None else {}
+        self.data = data
 
     @abstractmethod
     def read(self):

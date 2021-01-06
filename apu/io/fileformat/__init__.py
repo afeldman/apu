@@ -6,8 +6,6 @@ import glob
 
 '''
     supported_formats = {
-        ".pickle"
-        ".dill"
         ".h5"
         ".hdf5"
         ".npy"
