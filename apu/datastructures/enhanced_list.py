@@ -4,12 +4,12 @@
 from typing import Generic, TypeVar, Iterable, List
 
 # generics datatype
-T = TypeVar("T")
+Type = TypeVar("T")
 
-class EnhancedList(list, Generic[T]):
+class EnhancedList(list, Generic[Type]):
     """ extends list of a gerneric type """
 
-    def __init__(self, *args:Iterable[T]):
+    def __init__(self, *args:Iterable[Type]):
         """ create a list type """
         list.__init__(self, *args)
 
@@ -26,8 +26,8 @@ class EnhancedList(list, Generic[T]):
         """
         if isinstance(key, list):
             return EnhancedList([self[i] for i in key])
-        else:
-            return list.__getitem__(self,key)
+
+        return list.__getitem__(self,key)
 
     def reject_indices(self, indices: List[int]) -> EnhancedList:
         """ remove the elements utilizing a list

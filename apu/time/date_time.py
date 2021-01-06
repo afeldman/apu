@@ -141,8 +141,8 @@ class DateTime:
             >>> import datetime as dt
             >>> from apu.time.date_time import DateTime
             >>> print(DateTime.time_string(
-                      datetime=dt.datetime(2020,1,2,6,4,53),
-                      form="%y%m%d_%H%M%S"))
+            ...       datetime=dt.datetime(2020,1,2,6,4,53),
+            ...       form="%y%m%d_%H%M%S"))
             200102_060453
         """
 
