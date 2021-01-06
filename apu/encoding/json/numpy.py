@@ -1,10 +1,26 @@
+"""
+handling numpy data for json
+
+author: anton feldmann <anton.feldmann@gmail.com>
+"""
 import numpy as np
 
 from json.encoder import JSONEncoder
 from json.decoder import JSONDecoder
 
+# pylint: disable=C0103
 class NumpyEncoder(JSONEncoder):
-    """ Custom encoder for numpy data types """
+    """ Custom encoder for numpy data types
+        The NumpyEncoder is a JSONEncoder
+
+
+    Examples:
+    ..  example_code::
+        >>> import numpy as np
+        >>> from apu.encoding.json.numpy import NumpyEncoder
+        >>> arr = array([   0,  239,  479,  717,  952, 1192, 1432, 1667], dtype=int64)
+        >>> json.dumps(arr,cls=NumpyEncoder)
+    """
 
     def np_list(self, obj):
         return obj.tolist()
