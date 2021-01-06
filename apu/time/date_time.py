@@ -5,10 +5,11 @@ import time
 import random
 import pytz
 
+
 class DateTime:
     """Datetime contains the datetime utility functions"""
     @staticmethod
-    def datetime2unix(datetime_: dt.datetime) -> int:
+    def datetime2unix(datetime_: dt.datetime) -> float:
         """convert a datetime object into
             a unixtimestamp
 
@@ -16,7 +17,7 @@ class DateTime:
             datetime_(dt.datetime): datetime
 
         Returns:
-            (int): unix timestamp
+            (float): unix timestamp
 
         Examples:
         ..  example_code::
@@ -50,7 +51,6 @@ class DateTime:
 
         return dt.datetime.utcfromtimestamp(unix)
 
-
     @staticmethod
     def add_time(datetime_: dt.datetime,
                  day: int = 0,
@@ -79,8 +79,8 @@ class DateTime:
 
         # calculate all in seconds
         seconds += minute * 60
-        seconds += hour * 60 ** 2
-        seconds += day * 24 * 60 ** 2
+        seconds += hour * 60**2
+        seconds += day * 24 * 60**2
 
         # calculate timezone
         time_zone = datetime_ + dt.timezone(seconds=seconds)
@@ -123,3 +123,26 @@ class DateTime:
         time_intervall = end - start
         random_time = time_intervall * random_callback.random()
         return start + random_time
+
+    @staticmethod
+    def time_string(datetime: dt.datetime = dt.datetime.now(),
+                    form: str = "%y%m%d_%H%M%S") -> str:
+        """ create string date.
+
+        Arguments:
+            datetime(datetime.datetime): date
+            form(str): format string
+
+        Returns:
+            (str): date as string
+
+        Examples:
+        ..  example_code::
+            >>> import datetime as dt
+            >>> from apu.time.date_time import DateTime
+            >>> print(DateTime.time_string(datetime=dt.datetime(2020,1,2,6,4,53),
+            >>>       form="%y%m%d_%H%M%S"))
+            200102_060453
+        """
+
+        return datetime.strftime(form)
