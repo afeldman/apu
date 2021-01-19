@@ -15,12 +15,15 @@ def supported_format():
         module_name = [Path(local_file) for local_file \
                      in modules if not '__init__' in local_file]
 
-        # import sensor
-        for sensor in module_name:
+        # import module
+        for module in module_name:
             mod_gen = importlib.import_module(
-                f"apu.io.fileformat.{sensor.stem}"
+                f"apu.io.__fileformat.{module.stem}"
                 )
+
             for name, obj in getmembers(mod_gen, isclass):
+                if "format" in name.lower():
+                    continue
                 __supported_format__[f"{name.lower()}"] = obj
 
     return __supported_format__

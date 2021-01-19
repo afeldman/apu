@@ -9,17 +9,18 @@ from apu.io.dill import reconstruct, load
 __all__ = ['reconstruct', "load"]
 
 from typing import Any
-from apu.io.fileformat.csv import CSV
-from apu.io.fileformat.dill import DILL
-from apu.io.fileformat.json import (JSON, JSONL)
-from apu.io.fileformat.matlab import MAT
-from apu.io.fileformat.np import (NPY, NPZ)
-from apu.io.fileformat.pickel import Pickle
-from apu.io.fileformat.yaml import YAML
+from apu.io.__fileformat.csv import CSV
+from apu.io.__fileformat.dill import DILL
+from apu.io.__fileformat.json import (JSON, JSONL)
+from apu.io.__fileformat.matlab import MAT
+from apu.io.__fileformat.np import (NPY, NPZ)
+from apu.io.__fileformat.pickel import PICKLE
+from apu.io.__fileformat.yaml import YAML
+from apu.io.__fileformat import supported_format
 
 def read(filepath: str, **kwargs: Any) -> Any:
 
-    supported_formats = (".csv", ".dill", ".json", ".jsonl", ".mat", ".npy", ".npz", ".pickle", ".yml", ".yaml")
+    supported_formats = supported_format
 
     filepathl = filepath.lower()
 
@@ -45,12 +46,12 @@ def read(filepath: str, **kwargs: Any) -> Any:
         npz = NPZ(path=filepath, kwargs=kwargs)
         return npz.read()
     elif filepathl.endswith(".pickle"):
-        pickle = Pickle(path=filepath, kwargs=kwargs)
+        pickle = PICKLE(path=filepath, kwargs=kwargs)
         return pickle.read()
     elif filepathl.endswith(".yml") or filepathl.endswith(".yaml"):
         yaml = YAML(path=filepath, kwargs=kwargs)
         return yaml.read()
-    elif filepath.lower().endswith(".h5") or filepath.lower().endswith(".hdf5"):
+    elif filepathl.endswith(".h5") or filepathl.endswith(".hdf5"):
         raise NotImplementedError(
             "HDF5 is not supported. See "
             "https://stackoverflow.com/a/41586571/562769"

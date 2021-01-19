@@ -29,7 +29,7 @@ class EnhancedList(list, Generic[Type]):
 
         return list.__getitem__(self,key)
 
-    def reject_indices(self, indices: List[int]) -> EnhancedList:
+    def reject_indices(self, indices: List[int]):
         """ remove the elements utilizing a list
 
         Arguments:
