@@ -2,12 +2,13 @@
 from pickle import dump, load, HIGHEST_PROTOCOL
 from apu.io.fileformat import FileFormat
 
-class Pickle(FileFormat):
+class PICKLE(FileFormat):
     """ handle pickel """
     def read(self):
         """ read pickled file """
         with open(self._filepath.absolute(), mode="br") as pickle_file:
             self.data = load(pickle_file)
+        return self.data
 
     def write(self, sink:str, create:bool=False):
         """ write pickel file """

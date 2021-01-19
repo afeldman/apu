@@ -9,6 +9,7 @@ class MAT(FileFormat):
         """ read mat file """
         with open(self._filepath.absolute(), mode="br") as mat_file:
             self.data = loadmat(mat_file, meta=False)
+        return self.data
 
     def write(self, sink:str, create:bool=False):
         """ write mat file """

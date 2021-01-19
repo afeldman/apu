@@ -9,6 +9,8 @@ class DILL(FileFormat):
         with open(self._filepath.absolute(), mode="br") as pickle_file:
             self.data = load(pickle_file)
 
+        return self.data
+
     def write(self, sink:str, create:bool=False):
         """ "write dill """
         if "protocol" not in self._args:

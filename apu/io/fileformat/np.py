@@ -8,6 +8,7 @@ class NPY(FileFormat):
         """ read npy files """
         with open(self._filepath.absolute(), mode="br") as numpy_file:
             self.data = load(numpy_file)
+        return self.data
 
     def write(self, sink:str, create:bool=False):
         """ write npy files """

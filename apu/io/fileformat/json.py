@@ -12,6 +12,8 @@ class JSONL(FileFormat):
         with open(self._filepath.absolute(), encoding="utf8", mode="r") as jsonl_file:
             self.data = [loads(line, **self._args) for line in jsonl_file if len(line) > 0]
 
+        return self.data
+
     def write(self, sink:str, create:bool=False):
         """ read json line """
         with open(sink, mode="w", encoding="utf8") as jsonl_file:
@@ -34,6 +36,8 @@ class JSON(FileFormat):
         """ read json file """
         with open(self._filepath.absolute(), encoding="utf8", mode="r") as json_file:
             self.data: Any = load(json_file, **self._args)
+
+        return self.data
 
     def write(self, sink:str, create:bool=False):
         """ write json files """

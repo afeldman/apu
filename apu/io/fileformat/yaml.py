@@ -10,6 +10,7 @@ class YAML(FileFormat):
         with open(self._filepath.absolute(), encoding="utf8",
                   mode="r") as yaml_file:
             self.data = safe_load(yaml_file)
+        return self.data
 
     def write(self, sink: str, create: bool = True):
         """ write the data into a data sink """
