@@ -15,7 +15,7 @@ rm -rf *
 ls -la .
 touch .nojekyll
 echo "*************************** checkout master"
-git checkout master docs/build/html
+git checkout master docs/
 ls -la .
 # build the docs
 echo "******************************* build doc"
