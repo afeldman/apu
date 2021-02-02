@@ -10,6 +10,7 @@ from apu.exception.io import UnsafeLoading
 from apu.exception.noteditable import NotEditable
 from apu.exception.readwrongfile import ReadWrongFile
 from apu.exception.unsupporteddatatype import UnsupportedDataType
+from apu.exception.module import ModuleNotImportedError
 
 __all__ = [
     "ExistingKey",
@@ -20,4 +21,5 @@ __all__ = [
     "NotEditable",
     "ReadWrongFile",
     "UnsupportedDataType",
+    "ModuleNotImportedError"
 ]

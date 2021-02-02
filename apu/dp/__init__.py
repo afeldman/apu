@@ -6,11 +6,14 @@ __author__ = "anton feldmann"
 
 from apu.dp.null import Null
 from apu.dp.blackboard import Blackboard, MetaInfo
-from apu.dp.iterator import AlphabeticalOrderIterator, \
-                            AlphabeticalOrderCollection
+from apu.dp.iterator import (AlphabeticalOrderIterator,
+                            AlphabeticalOrderCollection)
+from apu.dp.singleton import (singleton, Singleton)
 
 __all__ = ['Null',
            "Blackboard",
            "MetaInfo",
            "AlphabeticalOrderIterator",
-           "AlphabeticalOrderCollection"]
+           "AlphabeticalOrderCollection",
+           "singleton",
+           "Singleton"]
