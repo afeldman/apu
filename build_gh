@@ -20,12 +20,14 @@ git push origin master
 # switch branches and pull the data we want
 echo "************************** get branch"
 git checkout --orphan gh-pages
+ls -la
 git fetch
 echo "*************************** delete all"
 rm -rf *
 ls -la .
 touch .nojekyll
 echo "*************************** checkout master"
+
 git checkout master docs/build/html
 ls -la .
 mv ./docs/build/html/* /docs
