@@ -24,7 +24,7 @@ cd docs
 make clean
 make html
 cd ..
-echo "***************************** mode doc"
+echo "***************************** upload doc"
 mv ./docs/build/html/* .
 git add -A
 git commit -m "publishing updated docs..."
