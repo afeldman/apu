@@ -21,4 +21,4 @@ class DILL(FileFormat):
 
     @classmethod
     def suffix(cls):
-        return (".dill")
+        return tuple(".dill")

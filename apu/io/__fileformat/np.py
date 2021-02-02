@@ -17,7 +17,8 @@ class NPY(FileFormat):
 
     @classmethod
     def suffix(cls):
-        return (".npy")
+        """ numpy suffix """
+        return tuple(".npy")
 
 class NPZ(NPY):
     """ handle npz files"""
@@ -28,4 +29,5 @@ class NPZ(NPY):
 
     @classmethod
     def suffix(cls):
-        return (".npz")
+        """ compressed numpy suffix """
+        return tuple(".npz")

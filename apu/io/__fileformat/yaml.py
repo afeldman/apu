@@ -3,6 +3,7 @@
 from yaml import safe_load, dump
 from apu.io.fileformat import FileFormat
 
+
 class YAML(FileFormat):
     """ reading and writing yaml files"""
     def read(self):
@@ -24,4 +25,5 @@ class YAML(FileFormat):
 
     @classmethod
     def suffix(cls):
+        """ yaml suffix """
         return (".yaml", ".yml")

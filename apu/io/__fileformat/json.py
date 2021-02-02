@@ -37,7 +37,8 @@ class JSONL(FileFormat):
 
     @classmethod
     def suffix(cls):
-        return (".jsonl")
+        """ json line suffix """
+        return tuple(".jsonl")
 
 
 class JSON(FileFormat):
@@ -67,4 +68,5 @@ class JSON(FileFormat):
 
     @classmethod
     def suffix(cls):
-        return (".json")
+        """ json suffix """
+        return tuple(".json")

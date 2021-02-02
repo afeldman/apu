@@ -5,6 +5,10 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 
 import tzlocal
+
+from apu.io.hash import DIGITS
+
+# pylint: disable=C0103,W0702
 with_magic = False
 try:
     import magic
@@ -12,17 +16,17 @@ try:
 except:
     print("cannot use magic")
 
-from apu.io.hash import DIGITS
+
 
 # pylint: disable=W0311
 class FileFormat(ABC):
     """ base class. so each object implements the same functions """
     def __init__(self, path: str,
-                kwargs: Dict = None, 
-                data: Any = None) -> None:
+                kwargs:Dict = None,
+                data:Any = None) -> None:
         """ Set the informations """
         self._filepath = Path(path).absolute()
-        
+
         if not self._filepath.exists():
             self._filepath.parent.mkdir(parents=True, exist_ok=True)
             self._filepath.touch(mode=0x755, exist_ok=True)
@@ -33,7 +37,7 @@ class FileFormat(ABC):
     @classmethod
     def suffix(cls):
         """ file extentions """
-        return self.__fileformat.suffix()
+        return tuple()
 
     @abstractmethod
     def read(self):
@@ -98,7 +102,7 @@ class FileFormat(ABC):
             meta["mime"] = "null"
             meta["magic-type"] = "null"
 
-        
+
         return meta
 
     def fingerprint(self, method:str="sha1"):

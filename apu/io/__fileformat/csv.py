@@ -55,4 +55,4 @@ class CSV(FileFormat):
 
     @classmethod
     def suffix(cls):
-        return (".cvs")
+        return tuple(".cvs")

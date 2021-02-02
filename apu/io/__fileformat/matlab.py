@@ -18,5 +18,6 @@ class MAT(FileFormat):
 
     @classmethod
     def suffix(cls):
-        return (".mat")
+        """ matlab suffix """
+        return tuple(".mat")
         
