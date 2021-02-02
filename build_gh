@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # build the docs
-echo "build doc"
+echo "******************************* build doc"
 cd docs
 make clean
 make html
@@ -12,19 +12,20 @@ git config --global user.email "anton.feldmann@gmail.com"
 git config --global user.name "anton feldmann"
 
 # commit and push
-echo "push to master"
+echo "*************************** push to master"
 git add -A
 git commit -m "building and pushing docs"
 git push origin master
 
 # switch branches and pull the data we want
-echo "get branch"
+echo "************************** get branch"
 git checkout --orphan gh-pages
 git fetch
-echo "delete all"
+echo "*************************** delete all"
 rm -rf .
 touch .nojekyll
 git checkout master docs/build/html
+ls -la ./docs
 mv ./docs/build/html/* /docs
 git add -A
 git commit -m "publishing updated docs..."
