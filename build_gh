@@ -16,6 +16,7 @@ ls -la .
 touch .nojekyll
 echo "*************************** checkout master"
 git checkout master docs/
+git checkout master apu/
 ls -la .
 # build the docs
 echo "******************************* build doc"
@@ -27,7 +28,7 @@ echo "***************************** mode doc"
 mv ./docs/build/html/* .
 git add -A
 git commit -m "publishing updated docs..."
-git push origin gh-pages
+git push origin gh-pages -f
 
 # switch back
 #git checkout master
