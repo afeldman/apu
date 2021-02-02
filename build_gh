@@ -16,7 +16,7 @@ git commit -m "building and pushing docs"
 git push origin master
 
 # switch branches and pull the data we want
-git checkout --orphan docs
+git checkout --orphan docs --force
 git fetch
 rm -rf .
 touch .nojekyll
