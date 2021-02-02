@@ -44,10 +44,19 @@ apu Input/Output
 ===================
 .. automodule:: apu.io
    :members:
+.. automodule:: apu.io.__fileformat
+   :members:
 
 apu Datastructures
 ===================
 .. automodule:: apu.datastructures
+   :members:
+
+apu machine Lerning
+===================
+.. automodule:: apu.ml
+   :members:
+.. automodule:: apu.ml.init
    :members:
 
 Indices and tables

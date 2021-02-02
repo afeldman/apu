@@ -19,9 +19,10 @@ from apu.io.__fileformat import supported_format
 
 from apu.io.dill import reconstruct, load
 from apu.io.fileformat import FileFormat
-from api.io.hash import _calc_
-from api.io.net import (download, urlread)
+from apu.io.hash import _calc_
+from apu.io.net import (download, urlread)
 from apu.io.path import Path
+
 __all__ = [
     'reconstruct', "load", "FileFormat", "_calc_", "download", "urlread",
     "Path"
