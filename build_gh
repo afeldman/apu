@@ -20,7 +20,7 @@ git checkout --orphan docs
 git fetch
 rm -rf .
 touch .nojekyll
-#git checkout master docs/build/html
+git checkout master docs/build/html
 mv ./docs/build/html/* /docs
 git add -A
 git commit -m "publishing updated docs..."
