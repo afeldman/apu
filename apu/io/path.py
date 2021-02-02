@@ -1,6 +1,4 @@
 """ expandvars to pathlib path """
-
-
 import os
 from pathlib import Path as libPath
 
