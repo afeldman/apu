@@ -22,10 +22,12 @@ echo "************************** get branch"
 git checkout --orphan gh-pages
 git fetch
 echo "*************************** delete all"
-rm -rf .
+rm -rf *
+ls -la .
 touch .nojekyll
+echo "*************************** checkout master"
 git checkout master docs/build/html
-ls -la ./docs
+ls -la .
 mv ./docs/build/html/* /docs
 git add -A
 git commit -m "publishing updated docs..."
