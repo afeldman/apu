@@ -10,10 +10,14 @@ class PICKLE(FileFormat):
             self.data = load(pickle_file)
         return self.data
 
-    def write(self, sink:str, create:bool=False):
+    def write(self):
         """ write pickel file """
         if "protocol" not in self._args:
             self._args["protocol"] = HIGHEST_PROTOCOL
-        with open(sink, "wb") as handle:
+        with open(self._filepath, "wb") as handle:
             dump(self.data, handle, **self._args)
         return self.data
+
+    @classmethod
+    def suffix(cls):
+        return (".pickle", ".pkl")

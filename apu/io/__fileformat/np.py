@@ -10,14 +10,22 @@ class NPY(FileFormat):
             self.data = load(numpy_file)
         return self.data
 
-    def write(self, sink:str, create:bool=False):
+    def write(self):
         """ write npy files """
-        save(sink, self.data)
+        save(self._filepath, self.data)
         return self.data
+
+    @classmethod
+    def suffix(cls):
+        return (".npy")
 
 class NPZ(NPY):
     """ handle npz files"""
-    def write(self, sink:str, create:bool=False):
+    def write(self):
         """ write npz files """
-        savez(sink, self._args)
+        savez(self._filepath, self._args)
         return self.data
+
+    @classmethod
+    def suffix(cls):
+        return (".npz")

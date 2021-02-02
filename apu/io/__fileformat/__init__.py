@@ -21,9 +21,10 @@ def supported_format():
                 f"apu.io.__fileformat.{module.stem}"
                 )
 
-            for name, obj in getmembers(mod_gen, isclass):
-                if "format" in name.lower():
+            for _, obj in getmembers(mod_gen, isclass):
+                if "apu.io.__fileformat" not in obj.__module__:
                     continue
-                __supported_format__[f"{name.lower()}"] = obj
+
+                __supported_format__[f"{obj.suffix()}"] = obj
 
     return __supported_format__

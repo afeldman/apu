@@ -12,12 +12,16 @@ class YAML(FileFormat):
             self.data = safe_load(yaml_file)
         return self.data
 
-    def write(self, sink: str, create: bool = True):
+    def write(self):
         """ write the data into a data sink """
-        with open(sink, mode="w", encoding="utf8") as yaml_file:
+        with open(self._filepath, mode="w", encoding="utf8") as yaml_file:
             dump(self.data,
                  yaml_file,
                  default_flow_style=False,
                  allow_unicode=True)
 
         return self.data
+
+    @classmethod
+    def suffix(cls):
+        return (".yaml", ".yml")

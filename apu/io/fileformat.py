@@ -5,7 +5,12 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 
 import tzlocal
-import magic
+with_magic = False
+try:
+    import magic
+    with_magic = True
+except:
+    print("cannot use magic")
 
 from apu.io.hash import DIGITS
 
@@ -13,11 +18,22 @@ from apu.io.hash import DIGITS
 class FileFormat(ABC):
     """ base class. so each object implements the same functions """
     def __init__(self, path: str,
-                kwargs: Dict = None, data: Any = None) -> None:
+                kwargs: Dict = None, 
+                data: Any = None) -> None:
         """ Set the informations """
-        self._filepath = Path(path)
+        self._filepath = Path(path).absolute()
+        
+        if not self._filepath.exists():
+            self._filepath.parent.mkdir(parents=True, exist_ok=True)
+            self._filepath.touch(mode=0x755, exist_ok=True)
+
         self._args = kwargs if kwargs is not None else {}
         self.data = data
+
+    @classmethod
+    def suffix(cls):
+        """ file extentions """
+        return self.__fileformat.suffix()
 
     @abstractmethod
     def read(self):
@@ -70,14 +86,19 @@ class FileFormat(ABC):
             "access_time": self.access_time
         }
 
-        try:
-            f_mime = magic.Magic(mime=True, uncompress=True)
-            f_other = magic.Magic(mime=False, uncompress=True)
-            meta["mime"] = f_mime.from_file(meta["filepath"])
-            meta["magic-type"] = f_other.from_file(meta["filepath"])
-        except ImportError:
-            pass
+        if with_magic:
+            try:
+                f_mime = magic.Magic(mime=True, uncompress=True)
+                f_other = magic.Magic(mime=False, uncompress=True)
+                meta["mime"] = f_mime.from_file(meta["filepath"])
+                meta["magic-type"] = f_other.from_file(meta["filepath"])
+            except ImportError:
+                pass
+        else:
+            meta["mime"] = "null"
+            meta["magic-type"] = "null"
 
+        
         return meta
 
     def fingerprint(self, method:str="sha1"):

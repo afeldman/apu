@@ -41,9 +41,9 @@ class CSV(FileFormat):
 
         return self.data
 
-    def write(self, sink:str, create:bool=False):
+    def write(self):
         """ write a csv file"""
-        with open(sink, mode="w", encoding="utf8") as csv_file:
+        with open(self._filepath, mode="w", encoding="utf8") as csv_file:
             if "delimiter" not in self._args:
                 self._args["delimiter"] = ","
             if "quotechar" not in self._args:
@@ -52,3 +52,7 @@ class CSV(FileFormat):
             writer = csv.writer(csv_file, **self._args)
             writer.writerows(self.data)
         return self.data
+
+    @classmethod
+    def suffix(cls):
+        return (".cvs")
