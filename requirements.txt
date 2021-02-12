@@ -1,5 +1,5 @@
 tzlocal>=2.1
-numpy>=1.20.0
+numpy>=1.18.0
 h5py>=3.1.0
 mat4py>=0.4.3
 pytz>=2021.1
