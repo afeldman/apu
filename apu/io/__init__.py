@@ -5,7 +5,7 @@ __email__ = "anton.feldmann@gmail.com"
 __author__ = "anton feldmann"
 
 from typing import Any
-from pathlib import Path
+from pathlib import Path as pp
 
 from apu.io.__fileformat.csv import CSV
 from apu.io.__fileformat.dill import DILL
@@ -33,7 +33,7 @@ def read(filepath: str, **kwargs: Any) -> Any:
     """ read data to file """
     supported_formats = supported_format()
 
-    filedatapath = Path(filepath).suffix
+    filedatapath = pp(filepath).suffix
     filedata = None
 
     for suffix, fileformat in supported_format().items():
