@@ -1,4 +1,4 @@
-tzlocal==2.1
+tzlocal
 numpy==1.20.0
 h5py==3.1.0
 mat4py==0.4.3
