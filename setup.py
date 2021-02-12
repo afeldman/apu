@@ -18,6 +18,10 @@ requires_ml = []
 requires_all = (requires_datetime + requires + requires_geographie +
                 requires_designpattern + requires_io + requires_ml)
 
+if "--ml" in sys.argv:
+    requires_ml.append("torch")
+    sys.argv.remove("--ml")
+
 setup(
     version="0.1.9",
     package_data={"apu": []},
