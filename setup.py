@@ -22,7 +22,7 @@ if "--ml" in sys.argv:
     sys.argv.remove("--ml")
 
 setup(
-    version="0.1.9",
+    version="0.1.10",
     package_data={"apu": []},
     project_urls={
         'Documentation': 'https://afeldman.github.io/apu/',
