@@ -36,7 +36,8 @@ setup(
         "pint", 
         "tzlocal",
         "GitPython",
-        "numpy"
+        "numpy",
+        "mat4py"
     ],
     extra_requires ={
         "all": requires_all,

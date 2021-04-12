@@ -52,13 +52,6 @@ apu Datastructures
 .. automodule:: apu.datastructures
    :members:
 
-apu machine Lerning
-===================
-.. automodule:: apu.ml
-   :members:
-.. automodule:: apu.ml.init
-   :members:
-
 Indices and tables
 ==================
 

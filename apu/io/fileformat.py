@@ -4,6 +4,11 @@ from datetime import datetime
 from abc import ABC, abstractmethod
 from pathlib import Path
 
+
+import os, sys
+sys.path.append(os.getcwd() )
+
+
 import tzlocal
 
 from apu.io.hash import DIGITS
@@ -116,7 +121,7 @@ class FileFormat(ABC):
         # retrun hashed file
         return DIGITS[method](self._filepath)
 
-    def compair(self, filepath:str, method="sha1"):
+    def compair(self, fileformat, method="sha1"):
         """ compair two files utilizing the fingerprint """
         return str(self.fingerprint(method=method).hexdigest()) == \
-                    str(FileFormat(filepath).fingerprint(method=method))
+                    str(fileformat.fingerprint(method=method).hexdigest())
