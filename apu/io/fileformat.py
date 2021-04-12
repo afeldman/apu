@@ -4,11 +4,6 @@ from datetime import datetime
 from abc import ABC, abstractmethod
 from pathlib import Path
 
-
-import os, sys
-sys.path.append(os.getcwd() )
-
-
 import tzlocal
 
 from apu.io.hash import DIGITS
