@@ -79,14 +79,14 @@ class Copy:
                 files_.add(tuple((src_file, dst_file)))
         return files_
 
-    def __call__(self, parallel: bool = False):
+    def __call__(self, jobs: int = os.cpu_count()):
         """ call the copy in parallel or serial"""
         if self.files is None or len(self.files) == 0:
             return
 
         with tqdm(total=len(self.files)) as pbar:
-            if parallel:
-                with ThreadPoolExecutor(max_workers=3) as ex:
+            if jobs > 1:
+                with ThreadPoolExecutor(max_workers=) as ex:
                     futures = [
                         ex.submit(copy_, file_, pbar) for file_ in self.files
                     ]
