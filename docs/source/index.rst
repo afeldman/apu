@@ -52,6 +52,7 @@ apu Datastructures
 .. automodule:: apu.datastructures
    :members:
 
+<<<<<<< HEAD
 apu machine Lerning
 ===================
 .. automodule:: apu.ml
@@ -59,6 +60,8 @@ apu machine Lerning
 .. automodule:: apu.ml.init
    :members:
 
+=======
+>>>>>>> ac74bbc231930f5c0769d01fd2b643069fe2f618
 Indices and tables
 ==================
 

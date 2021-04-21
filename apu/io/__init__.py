@@ -7,26 +7,25 @@ __author__ = "anton feldmann"
 from typing import Any
 from pathlib import Path as pp
 
-from apu.io.__fileformat.csv import CSV
-from apu.io.__fileformat.dill import DILL
-from apu.io.__fileformat.json import (JSON, JSONL)
-from apu.io.__fileformat.matlab import MAT
-from apu.io.__fileformat.np import (NPY, NPZ)
-from apu.io.__fileformat.pickel import PICKLE
-from apu.io.__fileformat.yaml import YAML
-from apu.io.__fileformat.h5 import H5
-from apu.io.__fileformat import supported_format
+from apu.io.format.csv import CSV
+from apu.io.format.dill import DILL
+from apu.io.format.json import (JSON, JSONL)
+from apu.io.format.matlab import MAT
+from apu.io.format.np import (NPY, NPZ)
+from apu.io.format.pickel import PICKLE
+from apu.io.format.yaml import YAML
+from apu.io.format.h5 import H5
+from apu.io.format import supported_format
 
 from apu.io.dill import reconstruct, load
 from apu.io.fileformat import FileFormat
 from apu.io.hash import _calc_
 from apu.io.net import (download, urlread)
 from apu.io.path import Path
-from apu.io.copy import Copy, copy
 
 __all__ = [
     'reconstruct', "load", "FileFormat", "_calc_", "download", "urlread",
-    "Path", "Copy","copy"
+    "Path"
 ]
 
 

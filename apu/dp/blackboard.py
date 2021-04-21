@@ -5,10 +5,7 @@ import os
 
 from typing import Callable, Any, List
 
-try:
-    from apu.datastructures.dictionary import DictionaryWrapper
-except ImportError as ierr:
-    print(str(ierr))
+from apu.datastructures.dictionary import DictionaryWrapper
 
 from apu.exception.dict_key import ExistingKey, NonExistingKey, KeyNotString
 from apu.exception.noteditable import NotEditable

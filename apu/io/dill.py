@@ -5,7 +5,6 @@ import dill as pickle
 
 from apu.exception.unsupporteddatatype import UnsupportedDataType
 
-
 def reconstruct(value: Any) -> str:
     """serialize the data
 
