@@ -1,26 +1,23 @@
 """ make recursive cpy easy"""
 import os
 import shutil
-from multiprocessing import Pool, Lock
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from pathlib import Path
 from tqdm import tqdm
 
-from apu.mp.parallel_for import parallel_for
 from apu.io.fileformat import compair
 
-MUTEX = Lock()
 
-
-def copy_(file_):
+def copy_(file_, pbar=None):
     """simple copy for one file"""
     src_file = file_[0]
     dst_file = file_[1]
 
-    with MUTEX:
-        print(f"{src_file} -> {dst_file}")
-
     shutil.copy(src_file, dst_file)
+
+    if pbar is not None:
+        pbar.update(1)
 
 
 class Copy:
@@ -39,7 +36,6 @@ class Copy:
         """
         self.origin = Path(origin)
         self.destination = Path(dest)
-        self.pool = Pool(os.cpu_count())
         self.verbose = verbose
         self.count = 1 if number is None or number <= 0 else number
 
@@ -75,11 +71,12 @@ class Copy:
                 src_file = Path(src_dir) / file_
                 dst_file = dst_dir / file_
 
-                if dst_file.exists() and not compair(
-                        src_file, dst_file, method="md5"):
-                    print(f"{src_file} already copied")
-                else:
-                    files_.add(tuple((src_file, dst_file)))
+                if dst_file.exists():
+                    if not compair(src_file, dst_file, method="md5"):
+                        print(f"{src_file} already copied")
+                        continue
+
+                files_.add(tuple((src_file, dst_file)))
         return files_
 
     def __call__(self, parallel: bool = False):
@@ -87,8 +84,14 @@ class Copy:
         if self.files is None or len(self.files) == 0:
             return
 
-        if parallel:
-            parallel_for(copy_, self.files)
-        else:
-            for file_ in tqdm(self.files):
-                copy_(file_)
+        with tqdm(total=len(self.files)) as pbar:
+            if parallel:
+                with ThreadPoolExecutor(max_workers=3) as ex:
+                    futures = [
+                        ex.submit(copy_, file_, pbar) for file_ in self.files
+                    ]
+                    for future in as_completed(futures):
+                        future.result()
+            else:
+                for file_ in self.files:
+                    copy_(file_, pbar)
