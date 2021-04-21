@@ -104,7 +104,7 @@ class NumpyDecoder(JSONDecoder):
         Returns:
             (bool): the object is recursiveable
         """
-        return isinstance(obj, NumpyDecoder._recursable_types)
+        return isinstance(obj, tuple(NumpyDecoder._recursable_types))
 
     # pylint: disable=R1710, R0912
     def decode(self, obj, *args, **kwargs):
