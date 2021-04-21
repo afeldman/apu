@@ -16,28 +16,32 @@ try:
 except:
     print("cannot use magic")
 
-def fingerprint(file_: Path, method:str="sha1"):
+
+def fingerprint(file_: Path, method: str = "sha1"):
     """ build file fingerprint """
     method = method.lower()
-    assert (method in DIGITS.keys()
-            ), f"cannot find the hashmethod. \
+    assert (method in DIGITS.keys()), f"cannot find the hashmethod. \
                 please select on of {DIGITS.keys()}"
+
     assert (file_.exists()), f"{file_.absolute()} is not a file!"
 
     # retrun hashed file
     return DIGITS[method](file_)
+
 
 def compair(file_, file_2, method="sha1"):
     """ compair two files utilizing the fingerprint """
     return str(fingerprint(file_, method=method).hexdigest()) == \
            str(fingerprint(file_2, method=method).hexdigest())
 
+
 # pylint: disable=W0311
 class FileFormat(ABC):
     """ base class. so each object implements the same functions """
-    def __init__(self, path: str,
-                kwargs:Dict = None,
-                data:Any = None) -> None:
+    def __init__(self,
+                 path: str,
+                 kwargs: Dict = None,
+                 data: Any = None) -> None:
         """ Set the informations """
         self._filepath = Path(path).absolute()
 
@@ -58,7 +62,7 @@ class FileFormat(ABC):
         """ read information from file into data buffer """
 
     @abstractmethod
-    def write(self, sink:str, create: bool = True) -> None:
+    def write(self, sink: str, create: bool = True) -> None:
         """ write buffer into file"""
 
     def __exists(self, create: bool = False) -> bool:
@@ -67,7 +71,7 @@ class FileFormat(ABC):
             return True
 
         if create:
-             self._filepath.touch("755", exist_ok=True)
+            self._filepath.touch("755", exist_ok=True)
         else:
             raise FileNotFoundError(f"cannot find {self._filepath}")
 
@@ -116,14 +120,13 @@ class FileFormat(ABC):
             meta["mime"] = "null"
             meta["magic-type"] = "null"
 
-
         return meta
 
-    def fprint(self, method:str="sha1"):
+    def fprint(self, method: str = "sha1"):
         """ build file fingerprint """
         return fingerprint(self._filepath, method=method)
 
     def __eq__(self, fileformat, method="sha1"):
         """ compair two files utilizing the fingerprint """
-        return compair(self.fprint(method=method), fileformat.fprint(method=method))
-
+        return compair(self.fprint(method=method),
+                       fileformat.fprint(method=method))

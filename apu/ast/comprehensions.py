@@ -3,14 +3,13 @@
 from sys import maxsize
 from random import randint
 import inspect
-from ast import (comprehension, dump, parse,
-                fix_missing_locations,
-                NodeTransformer, NodeVisitor,
-                Store, Call, Name, List,
-                Load, DictComp)
+from ast import (comprehension, dump, parse, fix_missing_locations,
+                 NodeTransformer, NodeVisitor, Store, Call, Name, List, Load,
+                 DictComp)
 from typing import List as TList, Dict, Tuple
 
 # pylint: disable=C0103
+
 
 class DuplicateCallFinder(NodeVisitor):
     """ A NodeVisitor that walks the nodes of a Python AST and finds any
@@ -29,8 +28,7 @@ class DuplicateCallFinder(NodeVisitor):
     def duplicate_calls(self) -> TList[Call]:
         """ finc dublicate calls """
         return [
-            call
-            for _, (call, call_count) in self.calls.items()
+            call for _, (call, call_count) in self.calls.items()
             if call_count > 1
         ]
 
@@ -64,14 +62,13 @@ class RenameTargetVariableNames(NodeTransformer):
         # Make sure we pop the variables off the stack of variable names
         # to replace so we don't continue to replace variable names
         # outside of the scope of the current comprehension
-        self.variables_to_replace_stack[:-len(node.generators)] # pylint: disable=W0106
+        self.variables_to_replace_stack[:-len(node.generators)]  # pylint: disable=W0106
         return node
 
-
     # Optimize list, set and dict comps, and generators the same way
-    visit_ListComp     = visit_comp
-    visit_SetComp      = visit_comp
-    visit_DictComp     = visit_comp
+    visit_ListComp = visit_comp
+    visit_SetComp = visit_comp
+    visit_DictComp = visit_comp
     visit_GeneratorExp = visit_comp
 
     def visit_Name(self, node):
@@ -100,7 +97,6 @@ class OptimizeComprehensions(NodeTransformer):
     """ A NodeTransformer that walks the nodes of a Python function AST and
     optimizes list comprehensions by eliminating duplicate function calls.
     """
-
     def __init__(self):
         self.calls_to_replace_stack = []
 
@@ -112,8 +108,7 @@ class OptimizeComprehensions(NodeTransformer):
         # Remove the fast_comprehensions decorator from the method so we don't
         # infinitely recurse
         node.decorator_list = [
-            decorator
-            for decorator in node.decorator_list
+            decorator for decorator in node.decorator_list
             if decorator.id != 'optimize_comprehensions'
         ]
         return node
@@ -148,8 +143,7 @@ class OptimizeComprehensions(NodeTransformer):
                 # instead of loading it (Load)
                 target=Name(
                     id=OptimizeComprehensions._identifier_from_Call(call),
-                    ctx=Store()
-                ),
+                    ctx=Store()),
                 iter=List(elts=[call], ctx=Load()),
                 ifs=[],
                 is_async=0,
@@ -166,16 +160,15 @@ class OptimizeComprehensions(NodeTransformer):
         return node
 
     # Optimize list, set and dict comps, and generators the same way
-    visit_ListComp     = visit_comp
-    visit_SetComp      = visit_comp
-    visit_DictComp     = visit_comp
+    visit_ListComp = visit_comp
+    visit_SetComp = visit_comp
+    visit_DictComp = visit_comp
     visit_GeneratorExp = visit_comp
 
     def visit_Call(self, node):
         """ Flatten the stack of calls to replace """
         call_hashes = [
-            dump(call)
-            for calls_to_replace in self.calls_to_replace_stack
+            dump(call) for calls_to_replace in self.calls_to_replace_stack
             for call in calls_to_replace
         ]
 
@@ -203,5 +196,5 @@ def optimize_comprehensions(func):
     new_func_name = out_node.body[0].name
     func_scope = func.__globals__
     # Compile the new method in the old methods scope
-    exec(compile(out_node, '<string>', 'exec'), func_scope) # pylint: disable=W0122
+    exec(compile(out_node, '<string>', 'exec'), func_scope)  # pylint: disable=W0122
     return func_scope[new_func_name]

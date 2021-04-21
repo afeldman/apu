@@ -3,13 +3,13 @@ import os
 import shutil
 from multiprocessing import Pool, Lock
 
-lock = Lock()
-
 from pathlib import Path
 from tqdm import tqdm
 
 from apu.mp.parallel_for import parallel_for
 from apu.io.fileformat import compair
+
+MUTEX = Lock()
 
 
 def copy_(file_):
@@ -17,7 +17,7 @@ def copy_(file_):
     src_file = file_[0]
     dst_file = file_[1]
 
-    with lock:
+    with MUTEX:
         print(f"{src_file} -> {dst_file}")
 
     shutil.copy(src_file, dst_file)
@@ -31,10 +31,11 @@ class Copy:
                  number: int = None,
                  sort: bool = True,
                  verbose: bool = False):
-        """copy from origin to destination. copy only a given number of objects of each
-           subfolder to the destination. If you want you can sort the data in each subfolder. this
-           makes it easy to make it more possible that the objects in the folder are
-           arranged.
+        """copy from origin to destination. copy only a given
+           number of objects of each subfolder to the destination.
+           If you want you can sort the data in each subfolder. this
+           makes it easy to make it more possible that the objects
+           in the folder are arranged.
         """
         self.origin = Path(origin)
         self.destination = Path(dest)
@@ -45,7 +46,8 @@ class Copy:
         self.files = self.__files(sort=sort)
 
     def __files(self, sort):
-        """create the file list. pleae keep in mind, that it can take longer if you tr to check if the
+        """create the file list. pleae keep in mind, that it can
+           take longer if you tr to check if the
            files allready exists."""
         files_ = set()
         for src_dir, _, files in os.walk(self.origin):
@@ -68,16 +70,16 @@ class Copy:
             if len(file_list) == 0:
                 print(f"{src_dir} is empty?")
                 continue
-            else:
-                for file_ in file_list:
-                    src_file = Path(src_dir) / file_
-                    dst_file = dst_dir / file_
 
-                    if dst_file.exists() and not compair(
-                            src_file, dst_file, method="md5"):
-                        print(f"{src_file} already copied")
-                    else:
-                        files_.add(tuple((src_file, dst_file)))
+            for file_ in file_list:
+                src_file = Path(src_dir) / file_
+                dst_file = dst_dir / file_
+
+                if dst_file.exists() and not compair(
+                        src_file, dst_file, method="md5"):
+                    print(f"{src_file} already copied")
+                else:
+                    files_.add(tuple((src_file, dst_file)))
         return files_
 
     def __call__(self, parallel: bool = False):

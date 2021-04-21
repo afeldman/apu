@@ -7,6 +7,7 @@ from git import Repo
 
 # pylint: disable=C0301
 
+
 class GitUtil:
     """  git utils helps working with git in python
 
@@ -25,12 +26,11 @@ class GitUtil:
         >>> git.short_hash(num=16)
         'e6481c4d3d06b872'
     """
-
     def __init__(self,
-                repo: str,
-                user: dict=None,
-                path: str='',
-                refresh:bool=False):
+                 repo: str,
+                 user: dict = None,
+                 path: str = '',
+                 refresh: bool = False):
         """  git utils helps working with git in python
 
         Arguments:
@@ -79,16 +79,19 @@ class GitUtil:
             if user is None:
                 raise Exception('no user set to get the repo')
 
-            _ = {'ssh': '', 'name': 'anonymous', 'email': 'anonymous@example.com'}
+            _ = {
+                'ssh': '',
+                'name': 'anonymous',
+                'email': 'anonymous@example.com'
+            }
             _.update(user)
             user = _
 
             if not repo.startswith('git@'):
-                raise Exception(
-                    f'Invalid git checkout url: {repo}\n\n'
-                    'Please make sure you are using the valid \
+                raise Exception(f'Invalid git checkout url: {repo}\n\n'
+                                'Please make sure you are using the valid \
                     SSH url with the correct `git@github.com:account/repository.git` format\n\n'
-                )
+                                )
 
             if not os.path.isfile(user['ssh']):
                 raise Exception(
@@ -101,9 +104,13 @@ class GitUtil:
                 )
             os.environ['GIT_SSH'] = user['ssh']
             os.makedirs(path)
-            self.repo = Repo.clone_from(repo, path, env={'GIT_SSH': user['ssh']})
-            self.repo.config_writer().set_value('user', 'name', user['name']).release()
-            self.repo.config_writer().set_value('user', 'email', user['email']).release()
+            self.repo = Repo.clone_from(repo,
+                                        path,
+                                        env={'GIT_SSH': user['ssh']})
+            self.repo.config_writer().set_value('user', 'name',
+                                                user['name']).release()
+            self.repo.config_writer().set_value('user', 'email',
+                                                user['email']).release()
 
         self.commit = self.repo.head.commit
 
@@ -112,7 +119,7 @@ class GitUtil:
         """ return the hash oof the commit"""
         return str(self.commit.hexsha)
 
-    def short_hash(self, num:int=4):
+    def short_hash(self, num: int = 4):
         """ sometimes a short hash is needed """
         return str(self.repo.git.rev_parse(self.commit.hexsha, short=num))
 
@@ -128,7 +135,7 @@ class GitUtil:
         """
         return self.repo.bare
 
-    def set_commit(self, commit:str="master"):
+    def set_commit(self, commit: str = "master"):
         """ set the commit to a different point """
         self.commit = self.repo.commit(commit)
 
@@ -136,9 +143,12 @@ class GitUtil:
         """ pretty printing commit infos """
         print('----')
         print(str(self.hash))
-        print(f'"{self.commit.summary}" by {self.commit.author.name} ({self.commit.author.email})')
+        print(
+            f'"{self.commit.summary}" by {self.commit.author.name} ({self.commit.author.email})'
+        )
         print(str(self.commit.authored_datetime))
-        print(str(f"count: {self.commit.count()} and size: {self.commit.size}"))
+        print(
+            str(f"count: {self.commit.count()} and size: {self.commit.size}"))
 
     def print_repo(self):
         """ pretty printing repo infos """
@@ -148,7 +158,9 @@ class GitUtil:
             print(f'Remote named "{remote}" with URL "{remote.url}"')
         print(f'Last commit for repo is {str(self.repo.head.commit.hexsha)}.')
 
-    def auto_commit(self, branch: str = 'master', message: str = 'Auto commit'):
+    def auto_commit(self,
+                    branch: str = 'master',
+                    message: str = 'Auto commit'):
         """Basic commit method.
         This commit method will detect all file changes and doing `git add`,\
          `git commit -m <message>`, and `git push <branch>` all at once.

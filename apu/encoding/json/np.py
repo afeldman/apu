@@ -10,6 +10,7 @@ import numpy as np
 
 # pylint: disable=C0103,R0201,R1705,R0911
 
+
 class NumpyEncoder(JSONEncoder):
     """ Custom encoder for numpy data types
         The NumpyEncoder is a JSONEncoder
@@ -24,7 +25,6 @@ class NumpyEncoder(JSONEncoder):
         ...      dtype=int64)
         >>> json.dumps(arr,cls=NumpyEncoder)
     """
-
     def np_list(self, obj):
         """ numpy array object to json list """
         return obj.tolist()
@@ -41,7 +41,7 @@ class NumpyEncoder(JSONEncoder):
         """ numpy complex to dict.
         because the decoder has to decode
         complex i use a dict """
-        return { "real": obj.real, "imag": obj.imag }
+        return {"real": obj.real, "imag": obj.imag}
 
     def np_bool(self, obj):
         """ numpy boolean to boolean """
@@ -62,7 +62,7 @@ class NumpyEncoder(JSONEncoder):
         elif isinstance(obj, (np.complex_, np.complex64, np.complex128)):
             return self.np_complex(obj)
 
-        elif isinstance(obj, (np.ndarray,)):
+        elif isinstance(obj, (np.ndarray, )):
             return self.np_list(obj)
 
         elif isinstance(obj, (np.bool_)):
@@ -73,9 +73,11 @@ class NumpyEncoder(JSONEncoder):
 
         return JSONEncoder.default(self, obj)
 
+    # pylint: disable=E0202
     def default(self, obj):
-        """ defualt Encoder entrypoint to encode """
+        """ default Encoder entrypoint to encode """
         return self.np(obj)
+
 
 class NumpyDecoder(JSONDecoder):
     """ Custom decode for numpy data types
@@ -102,9 +104,9 @@ class NumpyDecoder(JSONDecoder):
         Returns:
             (bool): the object is recursiveable
         """
-        return type(obj) in NumpyDecoder._recursable_types
+        return isinstance(obj, NumpyDecoder._recursable_types)
 
-    # pylint: disable=R1710, R0912:
+    # pylint: disable=R1710, R0912
     def decode(self, obj, *args, **kwargs):
         """ decode the json string """
         if not kwargs.get('recurse', False):
@@ -113,7 +115,7 @@ class NumpyDecoder(JSONDecoder):
         if isinstance(obj, list):
             try:
                 return np.array(obj)
-            except: # pylint: disable=W0702
+            except:  # pylint: disable=W0702
                 for item in obj:
                     if self._is_recursive(item):
                         obj[item] = self.decode(item, recurse=True)

@@ -3,13 +3,10 @@
 """
 #https://github.com/lebedov/msgpack-numpy
 
-
 from functools import partial
 import msgpack
-from msgpack import (Packer as _Packer,
-                    Unpacker as _Unpacker,
-                    unpack as _unpack,
-                    unpackb as _unpackb)
+from msgpack import (Packer as _Packer, Unpacker as _Unpacker, unpack as
+                     _unpack, unpackb as _unpackb)
 
 from apu.encoding.bytes import NumpyBytes
 
@@ -18,6 +15,7 @@ from apu.encoding.bytes import NumpyBytes
 #check for msgpack version. I do not support msg pack < 1.0.0
 if msgpack.version < (1, 0, 0):
     print(f"do not support msgpack version {msgpack.version}")
+
     # but i will make dummy classes
     class Packer(_Packer):
         """ dummy packer class"""
@@ -25,6 +23,7 @@ if msgpack.version < (1, 0, 0):
     class Unpacker(_Unpacker):
         """ dummy unpacker class"""
 else:
+
     class Packer(_Packer):
         """ Build binary string """
         def __init__(self,
@@ -117,6 +116,7 @@ def unpackb(packed, **kwargs):
     return _unpackb(packed, **kwargs)
 
 
+# pylint: disable=C0103
 load = unpack
 loads = unpackb
 dump = pack

@@ -2,12 +2,12 @@
 import h5py
 from apu.io.fileformat import FileFormat
 
+
 # pylint: disable=C0103,W0104
 class H5(FileFormat):
     """ h5 fileformat handler """
-
     def recursively_save_dict_contents_to_group(self, h5file: h5py.File,
-                                                    path: str, dic: dict):
+                                                path: str, dic: dict):
         """ save recursivly """
         for key, value in dic.items():
             if isinstance(value, dict):
@@ -40,7 +40,8 @@ class H5(FileFormat):
         self.data = {}
         for key, item in h5_file[path].items():
             if isinstance(item, h5py.Dataset):
-                self.data[key] ={ "attr": item.attrs,
+                self.data[key] = {
+                    "attr": item.attrs,
                     "data": item[()],
                     "type": 0
                 }
@@ -62,7 +63,8 @@ class H5(FileFormat):
 
     def write(self):
         with h5py.File(self._filepath, 'w') as h5file:
-            self.recursively_save_dict_contents_to_group(h5file, '/', self.data)
+            self.recursively_save_dict_contents_to_group(
+                h5file, '/', self.data)
         return self.data
 
     @classmethod

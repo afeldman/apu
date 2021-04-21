@@ -6,6 +6,7 @@ Author: anton feldmann <anton.feldmann@gmail.com>
 
 import functools
 
+
 def singleton(cls):
     """ singleton declerator
 
@@ -20,18 +21,22 @@ def singleton(cls):
             >>> Duck() is Duck()
             True
     """
-    pre_instance={}
+    pre_instance = {}
     functools.wraps(cls)
+
     def wrapper(*args, **kwargs):
         if cls in pre_instance and \
-            pre_instance.get(cls, None).get('args') == (args,kwargs):
+            pre_instance.get(cls, None).get('args') == (args, kwargs):
             return pre_instance[cls].get('instance')
 
-        pre_instance[cls] = {"args": (args,kwargs),
-                            "instance": cls(*args, **kwargs)}
+        pre_instance[cls] = {
+            "args": (args, kwargs),
+            "instance": cls(*args, **kwargs)
+        }
         return pre_instance[cls].get('instance')
 
     return wrapper
+
 
 class Singleton(type):
     """ singleton metaclass
@@ -47,6 +52,7 @@ class Singleton(type):
         True
     """
     _instances = {}
+
     def __call__(cls, *args, **kwargs):
         if cls not in cls._instances:
             cls._instances[cls] = super(Singleton, cls). \
