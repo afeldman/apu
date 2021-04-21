@@ -1,6 +1,6 @@
 """ apu.io anton python utils input output module """
 
-__version__ = (0, 0, 1)
+__version__ = (0, 0, 3)
 __email__ = "anton.feldmann@gmail.com"
 __author__ = "anton feldmann"
 
@@ -22,10 +22,11 @@ from apu.io.fileformat import FileFormat
 from apu.io.hash import _calc_
 from apu.io.net import (download, urlread)
 from apu.io.path import Path
+from apu.io.copy import Copy, copy
 
 __all__ = [
     'reconstruct', "load", "FileFormat", "_calc_", "download", "urlread",
-    "Path"
+    "Path", "Copy","copy"
 ]
 
 
