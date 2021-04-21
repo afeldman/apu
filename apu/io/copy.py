@@ -25,7 +25,8 @@ class Copy:
     def __init__(self,
                  origin: str,
                  dest: str,
-                 number: int = None,
+                 number: int = 1,
+                 jobs: int = os.cpu_count(),
                  sort: bool = True,
                  verbose: bool = False):
         """copy from origin to destination. copy only a given
@@ -39,13 +40,14 @@ class Copy:
         self.verbose = verbose
         self.count = 1 if number is None or number <= 0 else number
 
-        self.files = self.__files(sort=sort)
+        self.jobs = 1 if jobs < 2 else jobs
+        self.files = set()
+        self.__files(sort=sort)
 
     def __files(self, sort):
         """create the file list. pleae keep in mind, that it can
            take longer if you tr to check if the
            files allready exists."""
-        files_ = set()
         for src_dir, _, files in os.walk(self.origin):
 
             dst_dir = Path(
@@ -67,31 +69,38 @@ class Copy:
                 print(f"{src_dir} is empty?")
                 continue
 
-            for file_ in file_list:
-                src_file = Path(src_dir) / file_
-                dst_file = dst_dir / file_
+            with tqdm(total=len(file_list)) as pbar:
+                with ThreadPoolExecutor(max_workers=self.jobs) as ex:
+                    futures = [
+                        ex.submit(self.__add_file, file_, src_dir, dst_dir,
+                                  pbar) for file_ in file_list
+                    ]
+                    for future in as_completed(futures):
+                        future.result()
 
-                if dst_file.exists():
-                    if not compair(src_file, dst_file, method="md5"):
-                        print(f"{src_file} already copied")
-                        continue
+    def __add_file(self, file_, src_dir, dst_dir, pbar):
+        """ add the file name to the list of files or
+            continue with the next
+        """
+        src_file = Path(src_dir) / file_
+        dst_file = dst_dir / file_
 
-                files_.add(tuple((src_file, dst_file)))
-        return files_
+        if dst_file.exists():
+            if not compair(src_file, dst_file, method="md5"):
+                print(f"{src_file} already copied")
+            else:
+                self.files.add(tuple((src_file, dst_file)))
+        pbar.update(1)
 
-    def __call__(self, jobs: int = os.cpu_count()):
+    def __call__(self):
         """ call the copy in parallel or serial"""
         if self.files is None or len(self.files) == 0:
             return
 
         with tqdm(total=len(self.files)) as pbar:
-            if jobs > 1:
-                with ThreadPoolExecutor(max_workers=jobs) as ex:
-                    futures = [
-                        ex.submit(copy_, file_, pbar) for file_ in self.files
-                    ]
-                    for future in as_completed(futures):
-                        future.result()
-            else:
-                for file_ in self.files:
-                    copy_(file_, pbar)
+            with ThreadPoolExecutor(max_workers=self.jobs) as ex:
+                futures = [
+                    ex.submit(copy_, file_, pbar) for file_ in self.files
+                ]
+                for future in as_completed(futures):
+                    future.result()
