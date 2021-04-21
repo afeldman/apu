@@ -22,10 +22,11 @@ from apu.io.fileformat import FileFormat
 from apu.io.hash import _calc_
 from apu.io.net import (download, urlread)
 from apu.io.path import Path
+from apu.io.copy import Copy, copy_
 
 __all__ = [
     'reconstruct', "load", "FileFormat", "_calc_", "download", "urlread",
-    "Path"
+    "Path", "Copy", "copy_"
 ]
 
 

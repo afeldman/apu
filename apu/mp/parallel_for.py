@@ -1,5 +1,6 @@
 """ module builds parallel for loops """
 
+import os
 from contextlib import closing
 import multiprocessing.pool
 from typing import Any, Callable, List, Tuple
@@ -7,7 +8,7 @@ from typing import Any, Callable, List, Tuple
 def parallel_for(
         loop_callback: Callable[[Any], Any],
         parameters: List[Tuple[Any, ...]],
-        nb_threads: int = 8,
+        nb_threads: int = os.cpu_count()+4
 ) -> List[Any]:
     """Execute a for loop body in parallel
     .. note:: Race-Conditions

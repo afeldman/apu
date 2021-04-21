@@ -2,7 +2,8 @@
 
 from hashlib import md5, sha224, sha256, sha384, sha1, sha512
 
-BUF_SIZE = 65636
+
+BUF_SIZE = 65536
 
 # switch for different hashtypes
 DIGITS = {

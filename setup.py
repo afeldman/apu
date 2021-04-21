@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """apu: Antons Python Utilities."""
 
-import sys
+import sys, os
 import platform
 
 # Third party
@@ -17,12 +17,14 @@ if not platform.system().lower() == "windows":
 requires_all = (requires_datetime + requires + requires_geographie +
                 requires_designpattern + requires_io)
 
-if "--ml" in sys.argv:
-    requires_ml.append("torch")
-    sys.argv.remove("--ml")
+
+import pathlib
+sys.path.append(pathlib.Path(__file__).parent.absolute())
+
+from apu import __version__
 
 setup(
-    version="0.1.10",
+    version=".".join([str(v) for v in __version__]),
     package_data={"apu": []},
     project_urls={
         'Documentation': 'https://afeldman.github.io/apu/',

@@ -1,4 +1,4 @@
-""" working with file formates """
+"""working with file formates"""
 from typing import Dict, Any
 from datetime import datetime
 from abc import ABC, abstractmethod
@@ -16,7 +16,21 @@ try:
 except:
     print("cannot use magic")
 
+def fingerprint(file_: Path, method:str="sha1"):
+    """ build file fingerprint """
+    method = method.lower()
+    assert (method in DIGITS.keys()
+            ), f"cannot find the hashmethod. \
+                please select on of {DIGITS.keys()}"
+    assert (file_.exists()), f"{file_.absolute()} is not a file!"
 
+    # retrun hashed file
+    return DIGITS[method](file_)
+
+def compair(file_, file_2, method="sha1"):
+    """ compair two files utilizing the fingerprint """
+    return str(fingerprint(file_, method=method).hexdigest()) == \
+           str(fingerprint(file_2, method=method).hexdigest())
 
 # pylint: disable=W0311
 class FileFormat(ABC):
@@ -105,18 +119,11 @@ class FileFormat(ABC):
 
         return meta
 
-    def fingerprint(self, method:str="sha1"):
+    def fprint(self, method:str="sha1"):
         """ build file fingerprint """
-        method = method.lower()
-        assert (method in DIGITS.keys()
-            ), f"cannot find the hashmethod. \
-                please select on of {DIGITS.keys()}"
-        assert (self.__exists(create=False)), f"{self._filepath} is not a file!"
+        return fingerprint(self._filepath, method=method)
 
-        # retrun hashed file
-        return DIGITS[method](self._filepath)
-
-    def compair(self, fileformat, method="sha1"):
+    def __eq__(self, fileformat, method="sha1"):
         """ compair two files utilizing the fingerprint """
-        return str(self.fingerprint(method=method).hexdigest()) == \
-                    str(fileformat.fingerprint(method=method).hexdigest())
+        return compair(self.fprint(method=method), fileformat.fprint(method=method))
+
