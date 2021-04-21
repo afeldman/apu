@@ -86,7 +86,7 @@ class Copy:
 
         with tqdm(total=len(self.files)) as pbar:
             if jobs > 1:
-                with ThreadPoolExecutor(max_workers=) as ex:
+                with ThreadPoolExecutor(max_workers=jobs) as ex:
                     futures = [
                         ex.submit(copy_, file_, pbar) for file_ in self.files
                     ]
