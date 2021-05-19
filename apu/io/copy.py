@@ -71,7 +71,6 @@ class Copy:
                 print(f"{src_dir} is empty?")
                 continue
 
-            print("compare")
             with tqdm(total=len(file_list)) as pbar:
                 with ThreadPoolExecutor(max_workers=self.jobs) as ex:
                     futures = [
@@ -88,17 +87,19 @@ class Copy:
         src_file = Path(src_dir) / file_
         dst_file = dst_dir / file_
 
-        if dst_file.exists():
+        if dst_file.is_file():
             if not compair(src_file, dst_file, method="md5"):
                 self.files.add(tuple((src_file, dst_file)))
+        else:
+            self.files.add(tuple((src_file, dst_file)))
+
         pbar.update(1)
 
     def __call__(self):
         """ call the copy in parallel or serial"""
+
         if self.files is None or len(self.files) == 0:
             return
-
-        print("start copy")
 
         with tqdm(total=len(self.files)) as pbar:
             with ThreadPoolExecutor(max_workers=self.jobs) as ex:
