@@ -28,7 +28,7 @@ jobs:
           # install sphinx_gallery and matplotlib if available (may not work on pypy)
           pip install sphinx_gallery || true
       - name: Lint with pylint
-        run: pylint --rcfile=./.pylintrc apu
+        run: pylint --rcfile=./.pylintrc apu || true
       - name: Install from source (required for the pre-commit tests)
         run: pip install .
       - name: build wheel

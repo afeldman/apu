@@ -1,10 +1,9 @@
 name: Publish Python 🐍 distributions 📦 to PyPI
 
 on:
-- push
+  - push
 
 jobs:
-
   build-n-publish:
     name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
     runs-on: ubuntu-18.04
@@ -14,23 +13,23 @@ jobs:
         python-version: [3.7]
 
     steps:
-    - uses: actions/checkout@master
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-           python -m pip install --upgrade pip setuptools wheel twine
-           python -m pip install -r requirements.txt
-    - name: lint with pylint
-      run: |
+      - uses: actions/checkout@master
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel twine
+          python -m pip install -r requirements.txt
+      - name: lint with pylint
+        run: |
           pip install -U pylint
-          pylint --rcfile=./.pylintrc apu
-    - name: Publish distribution 📦 to PyPI
-      env:
-        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-      run: |
-        python setup.py sdist bdist_wheel
-        twine upload dist/*
+          pylint --rcfile=./.pylintrc apu || true
+      - name: Publish distribution 📦 to PyPI
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          python setup.py sdist bdist_wheel
+          twine upload dist/*
