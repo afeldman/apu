@@ -6,6 +6,7 @@ import re
 import tempfile
 from git import Repo
 
+
 def replace_line_in_file(fpath, old_line_start, new_line):
     """ find and delete string in a file """
     assert os.path.exists(fpath)
@@ -28,33 +29,30 @@ def replace_line_in_file(fpath, old_line_start, new_line):
             if breaks:
                 pass
             else:
-                tmpf = tempfile.NamedTemporaryFile(
-                    delete=True, mode='r+')  # temp file opened for writing
+                with tempfile.NamedTemporaryFile(
+                        delete=True,
+                        mode='r+') as tmpf:  # temp file opened for writing
 
-                for line in lines:  # process each line
-                    if old_line_start in line:  # find the line we want
-                        tmpf.write(new_line)  # replace it
-                        replaced = True
-                    else:
-                        tmpf.write(line)  # write old line unchanged
+                    for line in lines:  # process each line
+                        if old_line_start in line:  # find the line we want
+                            tmpf.write(new_line)  # replace it
+                            replaced = True
+                        else:
+                            tmpf.write(line)  # write old line unchanged
 
-                tmpf.flush()
-                tmpf.seek(0, os.SEEK_SET)
+                    tmpf.flush()
+                    tmpf.seek(0, os.SEEK_SET)
 
-                if replaced:  # overwrite the original file
-                    fhandle.seek(0)  # beginning of file
-                    fhandle.truncate()  # empties out original file
-                    for tmplines in tmpf.readlines():
-                        fhandle.write(
-                            tmplines)  # writes each line to original file
-                        written = True
-
-                tmpf.close()  # tmpfile auto deleted
-            fhandle.close()  # we opened it , we close it
+                    if replaced:  # overwrite the original file
+                        fhandle.seek(0)  # beginning of file
+                        fhandle.truncate()  # empties out original file
+                        for tmplines in tmpf.readlines():
+                            fhandle.write(
+                                tmplines)  # writes each line to original file
+                            written = True
 
     except IOError as ioe:  # if something bad happened.
         print("ERROR", ioe)
-        fhandle.close()
         return False
 
     return replaced and written  # replacement happened with no errors = True
@@ -81,7 +79,7 @@ def setversion(repopath, versionfile):
         replace_line_in_file(
             versionfile, "__version__",
             f"__version__ = ({int(major)}, {int(minor)}, {int(patch)})\n")
-    except: # pylint: disable=W0702
+    except:  # pylint: disable=W0702
         print("set the version to 0.1.0 because no tag set")
         replace_line_in_file(versionfile, "__version__",
                              "__version__ = (0, 1, 0)\n")

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """apu: Antons Python Utilities."""
 
-import sys, os
+import sys
 import platform
 
 # Third party

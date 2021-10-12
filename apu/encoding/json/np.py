@@ -73,7 +73,7 @@ class NumpyEncoder(JSONEncoder):
 
         return JSONEncoder.default(self, obj)
 
-    # pylint: disable=E0202
+    # pylint: disable=E0202,W0237
     def default(self, obj):
         """ default Encoder entrypoint to encode """
         return self.np(obj)

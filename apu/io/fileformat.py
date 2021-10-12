@@ -65,6 +65,7 @@ class FileFormat(ABC):
     def write(self, sink: str, create: bool = True) -> None:
         """ write buffer into file"""
 
+    # pylint: disable=W0238
     def __exists(self, create: bool = False) -> bool:
         """ does the file exists? if not exists, we can create the file """
         if self._filepath.exists():

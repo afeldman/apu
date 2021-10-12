@@ -191,6 +191,7 @@ class NumpyBytes(Bytes):
 
         return coded
 
+    # pylint: disable=W0237
     @staticmethod
     def decode(npobj, chain=None):
         """numpy object decoder

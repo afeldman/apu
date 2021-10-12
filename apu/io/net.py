@@ -5,6 +5,7 @@ from typing import Optional
 # Core Library
 from urllib.request import (urlretrieve, urlopen)
 
+
 def download(source: str, sink: Optional[str] = None) -> str:
     """ download from page"""
     if sink is None:
@@ -12,9 +13,11 @@ def download(source: str, sink: Optional[str] = None) -> str:
     urlretrieve(source, sink)
     return sink
 
+
 def urlread(url: str, encoding: str = "utf8") -> str:
     """ read a page """
-    response = urlopen(url)
-    content = response.read()
-    content = content.decode(encoding)
+    content = ""
+    with urlopen(url) as response:
+        content = response.read()
+        content = content.decode(encoding)
     return content

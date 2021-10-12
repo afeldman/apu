@@ -2,7 +2,10 @@
 the module exists """
 from importlib.util import find_spec, module_from_spec
 
+from pip._internal.req import parse_requirements
+
 from apu.exception.module import ModuleNotImportedError
+
 
 class Module:
     """in this class all module containing functions are placed."""
@@ -62,3 +65,9 @@ class Module:
             raise ModuleNotFoundError(f"{module_name} not found") from mnf
         except AttributeError as ate:
             raise AttributeError(f"{module_name} attribute not valid") from ate
+
+    @staticmethod
+    def load_requirements(fname):
+        """ install missing pip packages """
+        reqs = parse_requirements(fname, session=False)
+        return [str(ir.requirement) for ir in reqs]
