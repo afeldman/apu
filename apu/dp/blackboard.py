@@ -72,7 +72,7 @@ class Blackboard:
        """
     def __init__(self):
         self._memory_wrapper = DictionaryWrapper()
-        self._meta_info = {}
+        self._meta_info = dict()
 
     def close(self):
         """ delete the meta information and close the memory"""
@@ -196,8 +196,8 @@ class Blackboard:
             return list(self._meta_info.keys())
         return self._meta_info.keys()
 
-    def register_callback(self, key: str,
-                          callback: Callable[[Any], Any]) -> int:
+    def register_callback(self, key: str, callback: Callable[[Any],
+                                                             Any]) -> int:
         """ register a callback on the memory values
 
         Arguments:
