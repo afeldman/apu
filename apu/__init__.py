@@ -1,6 +1,6 @@
 """ apu: anton python utils """
 
-__version__ = (0, 1, 16)
+__version__ = (0, 1, 18)
 __email__ = "anton.feldmann@gmail.com"
 __author__ = "anton feldmann"
 
