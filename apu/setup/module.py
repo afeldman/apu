@@ -2,7 +2,10 @@
 the module exists """
 from importlib.util import find_spec, module_from_spec
 
-from pip._internal.req import parse_requirements
+try:  # for pip >= 10
+    from pip._internal.req import parse_requirements
+except ImportError:  # for pip <= 9.0.3
+    from pip.req import parse_requirements
 
 from apu.exception.module import ModuleNotImportedError
 
@@ -70,4 +73,7 @@ class Module:
     def load_requirements(fname):
         """ install missing pip packages """
         reqs = parse_requirements(fname, session=False)
-        return [str(ir.requirement) for ir in reqs]
+        try:
+            return [str(ir.requirement) for ir in reqs]
+        except:
+            return [str(ir.req) for ir in reqs]
