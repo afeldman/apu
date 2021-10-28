@@ -22,7 +22,7 @@ class MetaInfo:
             read_only(bool): set the value data to read_only
         """
         self.read_only = read_only
-        self._callback = list()
+        self._callback = []
 
     def __call__(self, value: Any):
         """ call all callback functions on given value
@@ -72,7 +72,7 @@ class Blackboard:
        """
     def __init__(self):
         self._memory_wrapper = DictionaryWrapper()
-        self._meta_info = dict()
+        self._meta_info = {}
 
     def close(self):
         """ delete the meta information and close the memory"""
@@ -296,7 +296,7 @@ class Blackboard:
         for key, meta_info in self._meta_info.items():
             read_only = meta_info.read_only
             saved_meta_info[key] = read_only
-        with open(file_path, 'w') as outfile:
+        with open(file_path, 'w', encoding="utf8") as outfile:
             json.dump(saved_meta_info, outfile)
 
     def _load_meta_info(self, file_path: str):
@@ -305,7 +305,7 @@ class Blackboard:
         Arguments:
             file_path: path to meta file
         """
-        with open(file_path, 'r') as infile:
+        with open(file_path, 'r', encoding="utf8") as infile:
             saved_meta_info = json.load(infile)
         if self._meta_info:
             self._meta_info.clear()

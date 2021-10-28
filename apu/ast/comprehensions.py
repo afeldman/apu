@@ -47,7 +47,7 @@ class RenameTargetVariableNames(NodeTransformer):
          replace."""
         for generator in node.generators:
             self.visit(generator.iter)
-            self.variables_to_replace_stack.append(dict())
+            self.variables_to_replace_stack.append({})
             self.visit(generator.target)
             for _if in generator.ifs:
                 self.visit(_if)

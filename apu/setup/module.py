@@ -69,6 +69,7 @@ class Module:
         except AttributeError as ate:
             raise AttributeError(f"{module_name} attribute not valid") from ate
 
+    # pylint: disable=W0702
     @staticmethod
     def load_requirements(fname):
         """ install missing pip packages """

@@ -84,7 +84,7 @@ class MemoryWrapper:
         Returns:
             (dict): get all serialized data in the blackboard
         """
-        return dict()
+        return {}
 
     @abc.abstractmethod
     def _restore(self, kv_pairs):

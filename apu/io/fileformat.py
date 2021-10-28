@@ -17,6 +17,7 @@ except:
     print("cannot use magic")
 
 
+# pylint: disable=C0201
 def fingerprint(file_: Path, method: str = "sha1"):
     """ build file fingerprint """
     method = method.lower()

@@ -17,7 +17,8 @@ def replace_line_in_file(fpath, old_line_start, new_line):
     written = False
 
     try:
-        with open(fpath, 'r+') as fhandle:  # open for read/write -- alias to f
+        with open(fpath, 'r+', encoding="utf8"
+                  ) as fhandle:  # open for read/write -- alias to f
             lines = fhandle.readlines()  # get all lines in file
 
             breaks = True
