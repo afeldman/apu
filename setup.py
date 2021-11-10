@@ -20,7 +20,12 @@ requires_all = (requires_datetime + requires + requires_geographie +
 
 import pathlib
 
-sys.path.append(pathlib.Path(__file__).parent.absolute())
+local_path = pathlib.Path(__file__).parent.absolute()
+sys.path.append(local_path)
+
+from apu.setup.version import setversion
+
+setversion(local_path, "apu/__init__.py")
 
 from apu import __version__
 
