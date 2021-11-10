@@ -25,7 +25,7 @@ sys.path.append(local_path)
 
 from apu.setup.version import setversion
 
-setversion(local_path, "apu/__init__.py")
+setversion(".", "apu/__init__.py")
 
 from apu import __version__
 
