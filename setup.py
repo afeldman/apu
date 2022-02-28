@@ -18,19 +18,10 @@ if not platform.system().lower() == "windows":
 requires_all = (requires_datetime + requires + requires_geographie +
                 requires_designpattern + requires_io + requires_ml)
 
-import pathlib
-
-local_path = pathlib.Path(__file__).parent.absolute()
-sys.path.append(local_path)
-
-from apu.setup.version import setversion
-
-setversion(".", "apu/__init__.py")
-
-from apu import __version__
+from apu.__version__ import VERSION
 
 setup(
-    version=".".join([str(v) for v in __version__]),
+    version=VERSION,
     package_data={"apu": []},
     project_urls={
         'Documentation': 'https://afeldman.github.io/apu/',
@@ -38,13 +29,8 @@ setup(
         'Tracker': 'https://github.com/afeldman/apu/issues',
     },
     install_requires=[
-        "dill",
-        "pytz",
-        "pint",
-        "tzlocal",
-        "GitPython",
-        "numpy",
-        "mat4py",
+        "dill", "pytz", "pint", "tzlocal", "GitPython", "numpy", "mat4py",
+        "semver"
     ],
     extra_requires={
         "all": requires_all,
