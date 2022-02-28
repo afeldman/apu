@@ -11,10 +11,12 @@ requires_designpattern = ["dill"]
 requires_datetime = ["pytz", "pint", "tzlocal"]
 requires = ["GitPython"]
 requires_geographie = ["numpy"]
-requires_ml = ["torch"]
+requires_ml = ["torch", "torchvision", "torchaudio", "pytorch-lightning"]
 requires_io = ["h5py", "mat4py", "pyyaml", "dill", "msgpack"]
+
 if not platform.system().lower() == "windows":
     requires_io.append("python_magic")
+
 requires_all = (requires_datetime + requires + requires_geographie +
                 requires_designpattern + requires_io + requires_ml)
 
@@ -29,8 +31,7 @@ setup(
         'Tracker': 'https://github.com/afeldman/apu/issues',
     },
     install_requires=[
-        "dill", "pytz", "pint", "tzlocal", "GitPython", "numpy", "mat4py",
-        "semver"
+        "dill", "pytz", "pint", "tzlocal", "GitPython", "numpy", "mat4py"
     ],
     extra_requires={
         "all": requires_all,

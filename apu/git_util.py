@@ -5,9 +5,8 @@ https://gist.github.com/zosimos/228ac374c4d52f61374c186199799a74
 import os
 from git import Repo
 
+
 # pylint: disable=C0301
-
-
 class GitUtil:
     """  git utils helps working with git in python
 
@@ -26,6 +25,7 @@ class GitUtil:
         >>> git.short_hash(num=16)
         'e6481c4d3d06b872'
     """
+
     def __init__(self,
                  repo: str,
                  user: dict = None,
