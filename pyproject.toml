@@ -1,0 +1,118 @@
+[tool.poetry]
+name = "apu"
+version = "0.2.0"
+description = "Antons Python Utils"
+authors = ["Anton Feldmann <anton.feldmann@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development",
+    "Topic :: Utilities"
+]
+packages = [
+    { include = "apu" },
+]
+
+[tool.poetry.dependencies]
+python = ">=3.9"
+tzlocal = ">=2.1"
+numpy = ">=1.18.0"
+h5py = ">=3.1.0"
+mat4py = ">=0.4.3"
+pytz = ">=2021.1"
+gitpython = ">=3.1.12"
+pint = ">=0.16.1"
+dill = ">=0.3.3"
+pyyaml = ">=5.3.1"
+msgpack = ">=1.0.0"
+python-magic = ">=0.4.18"
+docutils = "^0.21.2"
+
+[tool.poetry.group.docs.dependencies]
+recommonmark = "^0.7"
+sphinx-autodoc-typehints = "^1.12.0"
+sphinx-click = "^4.0.0"
+sphinxcontrib-spelling = "^7.2.1"
+sphinxcontrib-napoleon = { version = "0.7", optional = true }
+
+[tool.poetry.group.dev.dependencies]
+tox = "^4.15.0"
+ruff = "^0.4.6"
+coverage = "^7.5.3"
+mypy = "^1.10.0"
+pytest = "^8.2.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint]
+select = [
+  "E",       # pycodestyle (error)
+  "F",       # pyflakes
+  "W",       # pycodestyle (warning)
+  "B",       # flake8-bugbear
+  "I",       # isort
+  "RUF100",  # Unused noqa comments
+  "PGH004",  # blanket noqa comments
+  "UP",      # pyupgrade
+  "C4",      # flake8-comprehensions
+  "SIM201", "SIM202",  # simplify comparisons involving not
+  "ISC001",  # implicitly concatenated string
+  "RET501", "RET502",  # better return None handling
+]
+fixable = ["ALL"]
+unfixable = []
+
+[tool.tox]
+legacy_tox_ini = """
+    [tox]
+    requires =  
+        tox>=4  
+    env_list =   
+        py{39,310,311} 
+        type
+
+    [testenv]
+    deps = pytest
+    commands = pytest
+    allowlist_externals = poetry
+
+    [testenv:type]
+    deps = mypy
+    commands = mypy .
+
+    [testenv:docs]
+    basepython = python3.10
+    commands =
+        poetry install --no-root --with docs -v
+        poetry run make -C docs clean html spelling
+    
+"""
+
+[tool.coverage.run]
+command_line = "-m pytest"
+
+[tool.coverage.report]
+include = ["osma_smtp/*.py"]
+show_missing = true
+
+[tool.coverage.html]
+directory = "coverage_html_report"
+
+[tool.poetry.extras]
+docs = ["Sphinx", "sphinx-rtd-theme", "sphinxcontrib-napoleon"]
