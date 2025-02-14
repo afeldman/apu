@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "apu"
+version = "1.0.0"
+description = "antons python utilities"
+authors = ["anton feldmann <anton.feldmann@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<4.0"
+dill = "^0.3.9"
+pytz = "^2025.1"
+pint = "^0.24.4"
+tzlocal = "^5.3"
+gitpython = "^3.1.44"
+numpy = "^2.2.3"
+pytorch-lightning = "^2.5.0.post0"
+torchaudio = "^2.6.0"
+torchvision = "^0.21.0"
+torch = "^2.6.0"
+h5py = "^3.12.1"
+mat4py = "^0.6.0"
+pyyaml = "^6.0.2"
+msgpack = "^1.1.0"
+python-magic = "^0.4.27"
+python-decouple = "^3.8"
+semver = "^3.0.4"
+loguru = "^0.7.3"
+torch-tensorrt = "^2.6.0"
+
+[tool.poetry.group.dev.dependencies]
+uv = "^0.5.31"
+behave = "^1.2.6"
+yapf = "^0.43.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
