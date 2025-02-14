@@ -2,6 +2,8 @@ import pytorch_lightning as pl
 from pathlib import Path
 from loguru import logger
 
+import torch
+
 class ExportBaseCallback(pl.callbacks.ModelCheckpoint):
     """
     Basis-Export-Callback, der automatisch einen Batch aus dem Trainer zieht.
@@ -40,17 +42,39 @@ class ExportBaseCallback(pl.callbacks.ModelCheckpoint):
                 if dataloader is None:
                     logger.error("❌ Kein train_dataloader() gefunden.")
                     return None
-            
+
                 batch = next(iter(dataloader))  # Nimm einen Batch
+
                 if isinstance(batch, (tuple, list)):  # Falls (X, y)-Format
                     self.example_input = batch[0]
                 else:
                     self.example_input = batch  # Falls nur X existiert
 
-                logger.info("✅ Beispiel-Batch automatisch geladen.")
+                # Gerät des Modells holen
+                if trainer.model is not None:
+                    device = trainer.model.device
+                    self.example_input = self._move_batch_to_device(self.example_input, device)
+
+                logger.info("✅ Beispiel-Batch automatisch geladen und auf das richtige Gerät verschoben.")
 
             except Exception as e:
                 logger.error(f"❌ Konnte Beispiel-Batch nicht laden: {e}")
                 return None
             
         return self.example_input
+
+    def _move_batch_to_device(self, batch, device):
+        """
+        Verschiebt einen Batch rekursiv auf das angegebene `device`.
+
+        :param batch: Tensor oder (verschachtelte) Liste/Tuple/Dictionaries von Tensors.
+        :param device: Zielgerät (z. B. 'cuda' oder 'cpu').
+        :return: Batch auf dem Zielgerät.
+        """
+        if isinstance(batch, torch.Tensor):
+            return batch.to(device)
+        elif isinstance(batch, (tuple, list)):
+            return type(batch)(self._move_batch_to_device(b, device) for b in batch)
+        elif isinstance(batch, dict):
+            return {k: self._move_batch_to_device(v, device) for k, v in batch.items()}
+        return batch
