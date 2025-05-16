@@ -6,6 +6,10 @@ authors = ["anton feldmann <anton.feldmann@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.poetry.dependencies]
 python = ">=3.11,<4.0"
 dill = "^0.3.9"
@@ -16,23 +20,80 @@ gitpython = "^3.1.44"
 numpy = "^2.2.3"
 pytorch-lightning = "^2.5.0.post0"
 torchaudio = "^2.6.0"
-torchvision = "^0.21.0"
-torch = "^2.6.0"
+torchvision = "0.21.0"
 h5py = "^3.12.1"
 mat4py = "^0.6.0"
-pyyaml = "^6.0.2"
+pyyaml = "6.0.2"
 msgpack = "^1.1.0"
 python-magic = "^0.4.27"
 python-decouple = "^3.8"
 semver = "^3.0.4"
-loguru = "^0.7.3"
-torch-tensorrt = "^2.6.0"
+loguru = "0.7.3"
+torch-tensorrt = "2.6.0"
+albumentations = "^2.0.7"
+complexpytorch = "0.4"
+opencv-contrib-python = "4.11.0.86"
+opencv-python-headless = "4.11.0.86"
+psutil = "7.0.0"
+py-cpuinfo = "9.0.0"
+ray = "2.44.1"
+toml = "0.10.2"
+torchinfo = "1.8.0"
+torchmetrics = "1.7.0"
+torchsummary = "1.5.1"
+torchviz = "0.0.3"
+audiomentations = "*"
+torch = [
+    {version = "2.6.0", markers = "sys_platform == 'linux'"},
+    {version = "2.6.0", markers = "sys_platform == 'win32'"},
+    {version = "2.6.0", markers = "sys_platform == 'darwin'"}
+]
 
 [tool.poetry.group.dev.dependencies]
-uv = "^0.5.31"
-behave = "^1.2.6"
+uv = "^0.6.3"
+mypy = "^1.15.0"
 yapf = "^0.43.0"
+sphinx = "^8.2.1"
+sphinx-rtd-theme = "^3.0.2"
+sphinxcontrib-napoleon = "^0.7"
+ruff = "^0.9.10"
 
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[tool.poetry.group.test.dependencies]
+pytest = "^8.2.0"
+pytest-cov = "^5.0.0"
+
+[tool.uv]
+conflicts = [
+    [{ extra = "cpu" }, { extra = "cu124" }]
+]
+
+[tool.poetry.extras]
+cpu = ["torch", "torchvision"]
+cu124 = ["torch", "torchvision"]
+
+
+[tool.uv.sources]
+torch = [
+    { index = "pytorch-cu124", extra = "cu124", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
+    { index = "pytorch-cpu", extra = "cpu" }
+]
+torchvision = [
+    { index = "pytorch-cu124", extra = "cu124", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
+    { index = "pytorch-cpu", extra = "cpu" }
+]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cu124"
+url = "https://download.pytorch.org/whl/cu124"
+explicit = true
+
+[tool.ruff]
+line-length = 120
+select = ["E", "I", "B", "Q", "N", "UP", "W", "YTT"]
+ignore = ["E501"] 
+
