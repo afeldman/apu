@@ -1,13 +1,27 @@
+"""
+TensorRT Export Callback für PyTorch Lightning.
+
+Dieses Modul enthält einen Callback, der das beste Modell nach TensorRT exportiert, sobald es gespeichert wurde.
+
+Beispiel:
+```python
+from pytorch_lightning import Trainer
+from apu.ml.callbacks.tensor_rt import TensorRTExportCallback
+
+trainer = Trainer(callbacks=[TensorRTExportCallback()])
+trainer.fit(model)
+```
+"""
+
 from pathlib import Path
 
-from loguru import logger
-import torch
-import torch_tensorrt
-from pathlib import Path
 import pytorch_lightning as pl
+import torch
+import torch_tensorrt  # type: ignore
+from loguru import logger
 
-from apu.ml.checkpoint.baseModel import ExportBaseCallback
-from apu.ml.checkpoint.torchScript import TorchScriptExportCallback
+from apu.ml.callbacks.base import ExportBaseCallback
+from apu.ml.callbacks.torchscript import TorchScriptExportCallback
 
 
 class TensorRTExportCallback(ExportBaseCallback):
@@ -28,7 +42,7 @@ class TensorRTExportCallback(ExportBaseCallback):
         self.precision = precision
         self.workspace_size = workspace_size
 
-    def on_validation_end(self, trainer:pl.Trainer, pl_module: pl.LightningModule):
+    def on_validation_end(self, trainer: pl.Trainer, pl_module: pl.LightningModule):
         """
         Exportiert das Modell nach TensorRT (.trt) über TorchScript.
 
@@ -96,13 +110,11 @@ class TensorRTExportCallback(ExportBaseCallback):
                 torchscript_model,
                 inputs=[
                     torch_tensorrt.Input(
-                        min_shape=example_input.shape,
-                        opt_shape=example_input.shape,
-                        max_shape=example_input.shape
+                        min_shape=example_input.shape, opt_shape=example_input.shape, max_shape=example_input.shape
                     )
                 ],
                 enabled_precisions={precision_type},
-                workspace_size=self.workspace_size
+                workspace_size=self.workspace_size,
             )
 
             torch.jit.save(trt_model, trt_path)

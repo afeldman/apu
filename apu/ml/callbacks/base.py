@@ -1,8 +1,11 @@
-import pytorch_lightning as pl
 from pathlib import Path
+
+import pytorch_lightning as pl
+import torch
 from loguru import logger
 
-import torch
+from apu.ml.utils.device import get_best_device
+
 
 class ExportBaseCallback(pl.callbacks.ModelCheckpoint):
     """
@@ -15,10 +18,10 @@ class ExportBaseCallback(pl.callbacks.ModelCheckpoint):
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.example_input = None  # Wird später automatisch gesetzt
 
-    def get_example_input(self, trainer:pl.Trainer):
+    def get_example_input(self, trainer: pl.Trainer):
         """
         Holt sich einen Batch aus dem DataModule und speichert ihn als `self.example_input`.
-        
+
         :param trainer: PyTorch Lightning Trainer.
         :return: Beispiel-Batch.
 
@@ -60,10 +63,10 @@ class ExportBaseCallback(pl.callbacks.ModelCheckpoint):
             except Exception as e:
                 logger.error(f"❌ Konnte Beispiel-Batch nicht laden: {e}")
                 return None
-            
+
         return self.example_input
 
-    def _move_batch_to_device(self, batch, device):
+    def _move_batch_to_device(self, batch, device:str=get_best_device()):
         """
         Verschiebt einen Batch rekursiv auf das angegebene `device`.
 

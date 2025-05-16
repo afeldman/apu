@@ -1,9 +1,26 @@
-from pathlib import Path
-from loguru import logger
-import torch
-import pytorch_lightning as pl
+"""
+TorchScript-Export-Callback für PyTorch Lightning.
 
-from apu.ml.checkpoint.baseModel import ExportBaseCallback
+Dieses Modul enthält einen Callback, der das beste Modell nach TorchScript exportiert, sobald es gespeichert wurde.
+
+Beispiel:
+```python
+from pytorch_lightning import Trainer
+from apu.ml.callbacks.torchscript import TorchScriptExportCallback
+
+trainer = Trainer(callbacks=[TorchScriptExportCallback()])
+trainer.fit(model)
+```
+"""
+
+from pathlib import Path
+
+import pytorch_lightning as pl
+import torch
+from loguru import logger
+
+from apu.ml.callbacks.base import ExportBaseCallback
+
 
 class TorchScriptExportCallback(ExportBaseCallback):
     """
@@ -21,7 +38,7 @@ class TorchScriptExportCallback(ExportBaseCallback):
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.optimize = optimize
 
-    def on_validation_end(self, trainer:pl.Trainer, pl_module: pl.LightningModule):
+    def on_validation_end(self, trainer: pl.Trainer, pl_module: pl.LightningModule):
         """
         Exportiert das Modell nach TorchScript (.pt).
 
@@ -65,7 +82,6 @@ class TorchScriptExportCallback(ExportBaseCallback):
         except Exception as e:
             logger.error(f"❌ Fehler beim TorchScript-Export: {e}")
 
-
     @staticmethod
     def build_torchscript(module, model_path: Path, example_input: torch.Tensor, optimize: bool = True):
         """
@@ -76,7 +92,6 @@ class TorchScriptExportCallback(ExportBaseCallback):
         :param optimize: Falls True, wird `optimize_for_inference` angewendet.
         :return: Gespeichertes TorchScript-Modell.
         """
-
         try:
             logger.info(f"🔹 Konvertiere Modell nach TorchScript: {model_path}")
             traced_model = torch.jit.trace(module, example_inputs=example_input)

@@ -4382,4 +4382,4 @@ cu124 = ["torch", "torch", "torch", "torchvision"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<4.0"
-content-hash = "c6b495ec21f45fdbb443f6d95cb2fb200704e1b2a57f03ee71d92cf389297912"
+content-hash = "72ce197201e9f64aa2a08a19d0a4665c0135c1c07b7147ed60ec252d38c1cd4b"
