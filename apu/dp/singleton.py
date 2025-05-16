@@ -5,6 +5,7 @@ Author: anton feldmann <anton.feldmann@gmail.com>
 """
 
 import functools
+import threading
 
 
 def singleton(cls):
@@ -53,8 +54,11 @@ class Singleton(type):
     """
     _instances = {}
 
+    _lock = threading.Lock()
+
     def __call__(cls, *args, **kwargs):
-        if cls not in cls._instances:
-            cls._instances[cls] = super(Singleton, cls). \
+        with cls._lock:
+            if cls not in cls._instances:
+                cls._instances[cls] = super(). \
                                 __call__(*args, **kwargs)
         return cls._instances[cls]
